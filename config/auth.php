@@ -41,39 +41,43 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'admin' => [
+        'Admin' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'sales' => [
+        'Sales' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'doctor' => [
+        'Doctor' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'medicineVital' => [
+        'MedicineVital' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'bill' => [
+        'Bill' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'lab' => [
+        'Lab' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'dispatcher' => [
+        'Dispatcher' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'dispatcherTPA' => [
+        'TPA' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'vendor' => [
+        'PostSales' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+        'Vendor' => [
             'driver' => 'session',
             'provider' => 'users',
         ],

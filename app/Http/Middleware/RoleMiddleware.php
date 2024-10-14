@@ -24,6 +24,7 @@ class RoleMiddleware
 
             // If the user has the correct role, allow the request
             if ($user->role->name === $role) {
+                Auth::guard($user->role->name)->login($user);
                 return $next($request);
             }
 

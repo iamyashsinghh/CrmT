@@ -1,8 +1,8 @@
 @php
 $auth_user = Auth::user();
-
 $uri_arr = explode(".", Route::currentRouteName());
 $uri = end($uri_arr);
+$route_name = Route::currentRouteName();
 @endphp
 <aside class="main-sidebar sidebar-dark-danger" style="background: var(--wb-dark-red);">
     <a href="{{route('admin.dashboard')}}" class="brand-link text-center">
@@ -29,6 +29,18 @@ $uri = end($uri_arr);
                     <a href="{{route('admin.dashboard')}}" class="nav-link {{$uri == "dashboard" ? 'active' : ''}}">
                         <i class="nav-icon fas fa-home"></i>
                         <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('admin.case.index')}}" class="nav-link {{ strpos($route_name, 'cases') !== false ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>Cases</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('admin.users.index')}}" class="nav-link {{ strpos($route_name, 'users') !== false ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>Users</p>
                     </a>
                 </li>
             </ul>

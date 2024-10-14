@@ -27,7 +27,7 @@ class AuthController extends Controller
         // Attempt to log the user in
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             // Authentication passed
-            return redirect()->intended('dashboard'); // Redirect to intended route
+            return redirect()->intended('admin/dashboard'); // Redirect to intended route
         }
 
         // Flash error message to the session if authentication fails
@@ -39,7 +39,7 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout(); // Log out the user
-        return redirect()->route('login'); // Redirect to the login page
+        return redirect()->route('home'); // Redirect to the login page
     }
 
     public function update_profile_image($member_id, Request $request)
