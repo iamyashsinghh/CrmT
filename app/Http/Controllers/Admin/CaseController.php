@@ -57,9 +57,6 @@ class CaseController extends Controller
         }
 
         $case->save();
-
-
-
         return response()->json(['success' => true, 'message' => 'Case created successfully!']);
     }
 
@@ -93,9 +90,59 @@ class CaseController extends Controller
 
     public function show($id)
     {
-        $case = Cases::with('tpa')->findOrFail($id);
-        return view('admin.case.show', compact('case'));
+        $case = Cases::findOrFail($id);
+        $tpa_roles = User::where('role_id', 8)->get();
+        return view('admin.case.show', compact('case', 'tpa_roles'));
     }
+
+    public function cases_status_update($case_id, $status) {
+        $case = Cases::findOrFail($case_id);
+
+        // Update the forward status
+        $case->forward_status = $status;
+
+        // If status is 1 (forward status), assign a sales member
+        if ($status == 1) {
+            // Fetch all sales members with role_id = 2
+            $sales_users = User::where('role_id', 2)->get();
+
+            // Find the next available sales member with is_next = true
+            $next_sales_member = $sales_users->where('is_next', true)->first();
+
+            // If no member is marked as next, restart and assign the first one
+            if (!$next_sales_member) {
+                $next_sales_member = $sales_users->first(); // Get the first member
+            }
+
+            // Assign this member to the case
+            $case->assign_member_id = $next_sales_member->id;
+            $case->save();
+
+            // Reset is_next for all members
+            User::where('role_id', 2)->update(['is_next' => false]);
+
+            // Set is_next to true for the next sales member in the list
+            $next_member_index = $sales_users->search($next_sales_member); // Get the index of the current member
+            $next_member_index = ($next_member_index + 1) % $sales_users->count(); // Move to the next member or reset to the first one
+            $next_sales_user = $sales_users->get($next_member_index); // Get the next sales member
+            $next_sales_user->is_next = true;
+            $next_sales_user->save(); // Save the is_next flag
+        }
+        $case->save();
+        session()->flash('status', ['success' => true, 'alert_type' => 'success', 'message' => "Status updated."]);
+
+        return redirect()->back();
+    }
+
+    public function cases_status_remark(Request $request) {
+        $case = Cases::findOrFail($request->id);
+        $case->forward_status = 2;
+        $case->forward_status_remark = $request->remark;
+        $case->save();
+        session()->flash('status', ['success' => true, 'alert_type' => 'success', 'message' => "Status updated."]);
+        return redirect()->back();
+    }
+
 
     public function update(Request $request, $id)
     {
@@ -110,6 +157,13 @@ class CaseController extends Controller
             'doa_time' => 'required',
             'dod' => 'required|date',
             'dod_time' => 'required',
+            'sum_insured' => 'nullable',
+            'bill_range' => 'nullable',
+            'past_hospital' => 'nullable',
+            'past_diagnosis' => 'nullable',
+            'tpa' => 'nullable',
+            'tpa_allot_after_claim_no_received' => 'nullable',
+            'claim_no' => 'nullable',
             'aadhar_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'pan_card' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'cancelled_cheque' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
@@ -128,6 +182,14 @@ class CaseController extends Controller
         $case->doa_time = $request->doa_time;
         $case->dod = $request->dod;
         $case->dod_time = $request->dod_time;
+
+        $case->sum_insured = $request->sum_insured;
+        $case->bill_range = $request->bill_range;
+        $case->past_hospital = $request->past_hospital;
+        $case->past_diagnosis = $request->past_diagnosis;
+        $case->tpa = $request->tpa;
+        $case->tpa_allot_after_claim_no_received = $request->tpa_allot_after_claim_no_received;
+        $case->claim_no = $request->claim_no;
 
         if ($request->hasFile('aadhar_attachment')) {
             $case->aadhar_attachment = $request->file('aadhar_attachment')->store('attachments', 'public');

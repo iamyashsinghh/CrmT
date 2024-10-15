@@ -41,42 +41,71 @@ Route::prefix('/admin')->middleware(['auth', 'role:Admin'])->group(function () {
 
     // cases
     Route::get('/cases/ajaxlist', [Controllers\Admin\CaseController::class, 'ajax_list'])->name('admin_case_ajax');
-        Route::get('/cases', [Controllers\Admin\CaseController::class, 'index'])->name('admin.case.index');
-        Route::post('/cases/store', [Controllers\Admin\CaseController::class, 'store'])->name('admin.case.store');
-        Route::get('/cases/{id}', [Controllers\Admin\CaseController::class, 'show'])->name('admin.case.show');
-        Route::post('/vendor/cases/{id}/update', [Controllers\Admin\CaseController::class, 'update'])->name('admin.case.update');
-        Route::post('/cases/{case}/upload', [Controllers\Admin\CaseController::class, 'upload'])->name('admin.case.upload');
+    Route::get('/cases', [Controllers\Admin\CaseController::class, 'index'])->name('admin.case.index');
+    Route::post('/cases/store', [Controllers\Admin\CaseController::class, 'store'])->name('admin.case.store');
+    Route::get('/cases/{id}', [Controllers\Admin\CaseController::class, 'show'])->name('admin.case.show');
+    Route::post('/cases/{id}/update', [Controllers\Admin\CaseController::class, 'update'])->name('admin.case.update');
+    Route::get('/cases-status-update/{cases_id}/{status?}', [Controllers\Admin\CaseController::class, 'cases_status_update'])->name('admin.caseStatus.update');
+    Route::post('/cases-status-remark', [Controllers\Admin\CaseController::class, 'cases_status_remark'])->name('admin_cases_status_remark');
 });
 
 
 // Routes for Sales Role
 Route::prefix('/sales')->middleware(['auth', 'role:Sales'])->group(function () {
     Route::get('/dashboard', [Controllers\Sales\SalesController::class, 'dashboard'])->name('sales.dashboard');
+
+    // cases
+    Route::get('/cases/ajaxlist', [Controllers\Sales\CaseController::class, 'ajax_list'])->name('sales_case_ajax');
+    Route::get('/cases', [Controllers\Sales\CaseController::class, 'index'])->name('sales.case.index');
+    Route::get('/cases/{id}', [Controllers\Sales\CaseController::class, 'show'])->name('sales.case.show');
+    Route::post('/cases/{id}/update', [Controllers\Sales\CaseController::class, 'update'])->name('sales.case.update');
 });
 
 // Routes for Doctor Role
 Route::prefix('/doctor')->middleware(['auth', 'role:Doctor'])->group(function () {
     Route::get('/dashboard', [Controllers\Doctor\DoctorController::class, 'dashboard'])->name('doctor.dashboard');
+
+    Route::get('/cases/ajaxlist', [Controllers\Doctor\CaseController::class, 'ajax_list'])->name('doctor_case_ajax');
+    Route::get('/cases', [Controllers\Doctor\CaseController::class, 'index'])->name('doctor.case.index');
+    Route::get('/cases/{id}', [Controllers\Doctor\CaseController::class, 'show'])->name('doctor.case.show');
+    Route::post('/cases/{id}/update', [Controllers\Doctor\CaseController::class, 'update'])->name('doctor.case.update');
+
 });
 
 // Routes for MedicineVital Role
 Route::prefix('/medicine')->middleware(['auth', 'role:MedicineVital'])->group(function () {
-    Route::get('/dashboard', [Controllers\MedicineVital\MedicineController::class, 'dashboard'])->name('medicine.dashboard');
+    Route::get('/dashboard', [Controllers\MedicineVital\MedicineController::class, 'dashboard'])->name('medicinevital.dashboard');
+    Route::get('/cases/ajaxlist', [Controllers\MedicineVital\CaseController::class, 'ajax_list'])->name('medicinevital_case_ajax');
+    Route::get('/cases', [Controllers\MedicineVital\CaseController::class, 'index'])->name('medicinevital.case.index');
+    Route::get('/cases/{id}', [Controllers\MedicineVital\CaseController::class, 'show'])->name('medicinevital.case.show');
+    Route::post('/cases/{id}/update', [Controllers\MedicineVital\CaseController::class, 'update'])->name('medicinevital.case.update');
 });
 
 // Routes for Billing Role
 Route::prefix('/billing')->middleware(['auth', 'role:Bill'])->group(function () {
     Route::get('/dashboard', [Controllers\Bill\BillingController::class, 'dashboard'])->name('billing.dashboard');
+    Route::get('/cases/ajaxlist', [Controllers\Bill\CaseController::class, 'ajax_list'])->name('bill_case_ajax');
+    Route::get('/cases', [Controllers\Bill\CaseController::class, 'index'])->name('bill.case.index');
+    Route::get('/cases/{id}', [Controllers\Bill\CaseController::class, 'show'])->name('bill.case.show');
+    Route::post('/cases/{id}/update', [Controllers\Bill\CaseController::class, 'update'])->name('bill.case.update');
 });
 
 // Routes for Lab Role
 Route::prefix('/lab')->middleware(['auth', 'role:Lab'])->group(function () {
     Route::get('/dashboard', [Controllers\Lab\LabController::class, 'dashboard'])->name('lab.dashboard');
+    Route::get('/cases/ajaxlist', [Controllers\Lab\CaseController::class, 'ajax_list'])->name('lab_case_ajax');
+    Route::get('/cases', [Controllers\Lab\CaseController::class, 'index'])->name('lab.case.index');
+    Route::get('/cases/{id}', [Controllers\Lab\CaseController::class, 'show'])->name('lab.case.show');
+    Route::get('/cases/{id}/update', [Controllers\Lab\CaseController::class, 'update'])->name('lab.case.update');
 });
 
 // Routes for Dispatcher Role
 Route::prefix('/dispatcher')->middleware(['auth', 'role:Dispatcher'])->group(function () {
     Route::get('/dashboard', [Controllers\Dispatcher\DispatcherController::class, 'dashboard'])->name('dispatcher.dashboard');
+    Route::get('/cases/ajaxlist', [Controllers\Dispatcher\CaseController::class, 'ajax_list'])->name('dispatcher_case_ajax');
+    Route::get('/cases', [Controllers\Dispatcher\CaseController::class, 'index'])->name('dispatcher.case.index');
+    Route::get('/cases/{id}', [Controllers\Dispatcher\CaseController::class, 'show'])->name('dispatcher.case.show');
+    Route::post('/cases/{id}/update', [Controllers\Dispatcher\CaseController::class, 'update'])->name('dispatcher.case.update');
 });
 
 // Routes for TPA Role

@@ -93,6 +93,32 @@
                                 </select>
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">
+                                <label for="tpa">Tpa</label>
+                                <select class="form-control" name="tpa" id="tpa">
+                                    <option>Choose</option>
+                                    <option value="Mediassist">Mediassist</option>
+                                    <option value="Paramount">Paramount</option>
+                                    <option value="Raksha" >Raksha</option>
+                                    <option value="Hdfc" >Hdfc</option>
+                                    <option value="Digit">Digit</option>
+                                    <option value="Good health">Good health</option>
+                                    <option value="Icici">Icici</option>
+                                    <option value="Bajaj">Bajaj</option>
+                                    <option value="Vidal">Vidal</option>
+                                    <option value="Hitpa">Hitpa</option>
+                                    <option value="Health india">Health india</option>
+                                    <option value="Ericson" >Ericson</option>
+                                    <option value="Universal sampoo">Universal sampoo</option>
+                                    <option value="Nivs bupa">Nivs bupa</option>
+                                    <option value="Navi" >Navi</option>
+                                    <option value="Chola ms">Chola ms</option>
+                                    <option value="Care" >Care</option>
+                                    <option value="Aditya birla">Aditya birla</option>
+                                    <option value="East west">East west</option>
+                                    <option value="Md india">Md india</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-6 col-sm-12">
                                 <label>Date of Admission</label>
                                 <input type="date" class="form-control" name="doa" required>
                             </div>

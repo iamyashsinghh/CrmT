@@ -12,14 +12,21 @@ class Cases extends Model
     protected $guarded = [];
 
 
-    public function tpa()
+   
+    public function get_tpa()
     {
-        return $this->belongsTo(User::class, 'tpa');
+        return $this->belongsTo(User::class, 'tpa_allot_after_claim_no_received');
     }
 
+
     public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function get_assign_member()
 {
-    return $this->belongsTo(User::class, 'created_by');
+    return $this->belongsTo(User::class, 'assign_member_id');
 }
 
 }

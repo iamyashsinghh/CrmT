@@ -40,6 +40,7 @@ class CaseController extends Controller
         $validated['created_by'] = $auth_user->id;
 
         $case = Cases::create($validated);
+
         $case->case_code = "case_000$case->id";
 
 
@@ -91,7 +92,7 @@ class CaseController extends Controller
 
     public function show($id)
     {
-        $case = Cases::with('tpa')->findOrFail($id);
+        $case = Cases::findOrFail($id);
         return view('vendor.case.show', compact('case'));
     }
 
@@ -108,12 +109,13 @@ class CaseController extends Controller
             'gender' => 'required|string',
             'doa' => 'required|date',
             'doa_time' => 'required',
+            'tpa' => 'required',
             'dod' => 'required|date',
             'dod_time' => 'required',
-            'aadhar_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'pan_card' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'cancelled_cheque' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'policy' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'aadhar_attachment' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'pan_card' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'cancelled_cheque' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'policy' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
         $case = Cases::findOrFail($id);

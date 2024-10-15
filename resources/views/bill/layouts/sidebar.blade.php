@@ -5,7 +5,7 @@ $uri_arr = explode(".", Route::currentRouteName());
 $uri = end($uri_arr);
 @endphp
 <aside class="main-sidebar sidebar-dark-danger" style="background: var(--wb-dark-red);">
-    <a href="{{route('admin.dashboard')}}" class="brand-link text-center">
+    <a href="{{route('billing.dashboard')}}" class="brand-link text-center">
         <img src="{{asset('wb-logo2.webp')}}" alt="AdminLTE Logo" style="width: 80% !important;">
     </a>
     <div class="sidebar">
@@ -22,9 +22,15 @@ $uri = end($uri_arr);
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="{{route('admin.dashboard')}}" class="nav-link {{$uri == "dashboard" ? 'active' : ''}}">
+                    <a href="{{route('billing.dashboard')}}" class="nav-link {{$uri == "dashboard" ? 'active' : ''}}">
                         <i class="nav-icon fas fa-home"></i>
                         <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('bill.case.index')}}" class="nav-link {{$uri == "cases" ? 'active' : ''}}">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>Cases</p>
                     </a>
                 </li>
             </ul>

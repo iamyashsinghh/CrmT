@@ -7,5 +7,7 @@ use Illuminate\Http\Request;
 
 class DispatcherController extends Controller
 {
-    //
+    public function dashboard(){
+        return view('dispatcher.dashboard');
+    }
 }

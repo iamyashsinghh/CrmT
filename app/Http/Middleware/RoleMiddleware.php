@@ -54,7 +54,7 @@ class RoleMiddleware
             case 'Doctor':
                 return route('doctor.dashboard');
             case 'MedicineVital':
-                return route('medicine.dashboard'); // Assuming route exists
+                return route('medicinevital.dashboard'); // Assuming route exists
             case 'Bill':
                 return route('billing.dashboard'); // Assuming route exists
             case 'Lab':

@@ -1,5 +1,5 @@
-@extends('admin.layouts.app')
-@section('title', 'Dashboard | Admin')
+@extends('bill.layouts.app')
+@section('title', 'Dashboard | Bill')
 {{-- header code --}}
 @section('header-css')
     <link rel="stylesheet" href="{{ asset('plugins/charts/chart.css') }}">

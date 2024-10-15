@@ -7,5 +7,7 @@ use Illuminate\Http\Request;
 
 class SalesController extends Controller
 {
-    //
+    public function dashboard(){
+        return view('sales.dashboard');
+    }
 }

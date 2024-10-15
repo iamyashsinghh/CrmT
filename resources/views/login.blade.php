@@ -14,7 +14,7 @@
 <div class="login-box">
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="/" class="h1"><b>CRM</b>T</a>
+      <a href="/" class="h1"><b>Hospital Mgmt</b></a>
     </div>
     <div class="card-body">
       <form action="{{ url('login') }}" method="POST">

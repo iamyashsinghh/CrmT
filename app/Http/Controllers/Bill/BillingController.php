@@ -7,5 +7,7 @@ use Illuminate\Http\Request;
 
 class BillingController extends Controller
 {
-    //
+    public function dashboard(){
+        return view('bill.dashboard');
+    }
 }
