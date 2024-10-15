@@ -197,6 +197,58 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card mb-5">
+                <div class="card-header text-light" style="background-color: var(--wb-renosand);">
+                    <h3 class="card-title">Queries</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="serverTable" class="table mb-0" style="background-color: #e0eb3f5c">
+                            <thead>
+                                <tr>
+                                    <th class="text-nowrap">S.No.</th>
+                                    <th class="text-nowrap">Created At</th>
+                                    <th class="">Query</th>
+                                    <th class="text-nowrap">Query PDF</th>
+                                </tr>
+                            </thead>
+
+                            <body>
+                                @if (sizeof($case->get_guery) > 0)
+                                    @foreach ($case->get_guery as $key => $query)
+                                        <tr>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ date('d-M-Y h:i a', strtotime($query->created_at)) }}</td>
+                                            <td>
+                                                <button class="btn"
+                                                    onclick="handle_view_message(`{{ $query->query ?: 'N/A' }}`)"><i
+                                                        class="fa fa-comment-dots"
+                                                        style="color: var(--wb-renosand);"></i></button>
+                                            </td>
+                                            <td>
+                                                @if ($query->query_pdf)
+                                                    <a href="{{ asset('storage/' . $query->query_pdf) }}"
+                                                        target="_blank" class="text-primary">
+                                                        <i class="bi bi-file-earmark-text"></i> View
+                                                    </a>
+                                                @else
+                                                    <span class="text-muted">Not Available</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td class="text-center text-muted" colspan="5">No data available in
+                                            table</td>
+                                    </tr>
+                                @endif
+                            </body>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <div class="modal fade" id="cancelRemarkModal" tabindex="-1" aria-labelledby="cancelRemarkModalLabel"
@@ -356,6 +408,23 @@
                                     <option value="Md india" {{ $case->tpa == 'Md india' ? 'selected' : '' }}>Md india</option>
                                 </select>
                             </div>
+
+                            <div class="form-group col-lg-6 col-sm-12">
+                                <label for="claim_no">Claim No</label>
+                                <input type="text" class="form-control" name="claim_no"
+                                    id="claim_no"
+                                    value="{{ $case->claim_no }}">
+                            </div>
+
+                            <div class="form-group col-lg-6 col-sm-12">
+                                <label for="tpa_type">TPA Type</label>
+                                <select class="form-control" name="tpa_type" id="tpa_type">
+                                    <option value="" selected disabled>Choose TPA Type</option>
+                                    <option value="direct" {{ $case->tpa_type == 'direct' ? 'selected' : '' }}>Direct</option>
+                                    <option value="first" {{ $case->tpa_type == 'first' ? 'selected' : '' }}>First</option>
+                                </select>
+                            </div>
+
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="tpa_allot_after_claim_no_received">Alot Tpa</label>
                                 <select class="form-control" name="tpa_allot_after_claim_no_received" id="tpa_allot_after_claim_no_received">
@@ -366,14 +435,15 @@
                                     @endforeach
                                 </select>
                             </div>
-
-                            <div class="form-group col-lg-6 col-sm-12">
-                                <label for="claim_no">Claim No</label>
-                                <input type="text" class="form-control" name="claim_no"
-                                    id="claim_no"
-                                    value="{{ $case->claim_no }}">
+                            <div class="form-group col-lg-6 col-sm-12" id="tpa_allot_after_claim_no_received_two_container" style="display: none;">
+                                <label for="tpa_allot_after_claim_no_received_two">Alot TPA(Two)</label>
+                                <select class="form-control" name="tpa_allot_after_claim_no_received_two" id="tpa_allot_after_claim_no_received_two">
+                                    <option value="" selected disabled></option>
+                                    @foreach ($tpa_roles as $tpa)
+                                        <option value="{{ $tpa->id }}" {{ $case->tpa_allot_after_claim_no_received_two == $tpa->id ? 'selected' : '' }}>{{ $tpa->f_name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-
 
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="aadhar_attachment">Aadhar Attachment</label>
@@ -442,6 +512,20 @@
                     }
                 });
             });
+            // Show or hide the additional TPA field based on TPA Type selection
+        $('#tpa_type').change(function() {
+            if ($(this).val() === 'first') {
+                $('#tpa_allot_after_claim_no_received_two_container').show();
+            } else {
+                $('#tpa_allot_after_claim_no_received_two_container').hide();
+            }
+        });
+
+        // Automatically show the TPA field if "First" is already selected
+        if ($('#tpa_type').val() === 'first') {
+            $('#tpa_allot_after_claim_no_received_two_container').show();
+        }
+
         });
     </script>
 @endsection

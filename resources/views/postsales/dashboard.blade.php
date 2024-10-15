@@ -1,17 +1,16 @@
-@extends('admin.layouts.app')
-@section('title', 'Dashboard | Admin')
+@extends('postsales.layouts.app')
+@section('title', 'Dashboard | PostSales')
 {{-- header code --}}
 @section('header-css')
     <link rel="stylesheet" href="{{ asset('plugins/charts/chart.css') }}">
 @endsection
 
 @section('main')
-<div class="content-wrapper pb-5">
+    <div class="content-wrapper pb-5">
+        <h1>Hello</h1>
+    </div>
 
-<h1>Hello</h1>
-</div>
-
-{{-- footer code --}}
+    {{-- footer code --}}
 @section('footer-script')
 
 @endsection

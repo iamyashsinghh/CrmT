@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
+use App\Http\Controllers\Controller;
 
 /*
 |----------------------------------------------------------------------
@@ -108,14 +109,20 @@ Route::prefix('/dispatcher')->middleware(['auth', 'role:Dispatcher'])->group(fun
     Route::post('/cases/{id}/update', [Controllers\Dispatcher\CaseController::class, 'update'])->name('dispatcher.case.update');
 });
 
-// Routes for TPA Role
-Route::prefix('/tpa')->middleware(['auth', 'role:TPA'])->group(function () {
-    Route::get('/dashboard', [Controllers\TPA\TpaController::class, 'dashboard'])->name('tpa.dashboard');
-});
-
 // Routes for PostSales Role
 Route::prefix('/postsales')->middleware(['auth', 'role:PostSales'])->group(function () {
     Route::get('/dashboard', [Controllers\PostSales\PostSalesController::class, 'dashboard'])->name('postsales.dashboard');
+    Route::get('/cases/ajaxlist', [Controllers\PostSales\CaseController::class, 'ajax_list'])->name('postsales_case_ajax');
+    Route::get('/cases', [Controllers\PostSales\CaseController::class, 'index'])->name('postsales.case.index');
+    Route::get('/cases/{id}', [Controllers\PostSales\CaseController::class, 'show'])->name('postsales.case.show');
+    Route::post('/cases/{id}/update', [Controllers\PostSales\CaseController::class, 'update'])->name('postsales.case.update');
+
+    Route::post('/query/add', [Controllers\PostSales\CaseController::class, 'query_add'])->name('postsales.query.add');
+});
+
+// Routes for TPA Role
+Route::prefix('/tpa')->middleware(['auth', 'role:TPA'])->group(function () {
+    Route::get('/dashboard', [Controllers\TPA\TpaController::class, 'dashboard'])->name('tpa.dashboard');
 });
 
 // Routes for Vendor Role

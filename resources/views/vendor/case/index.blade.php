@@ -58,9 +58,19 @@
                                 <label>Name</label>
                                 <input type="text" class="form-control" name="name" required>
                             </div>
-                            <div class="form-group col-lg-6 col-sm-12">
-                                <label>Age</label>
-                                <input type="number" class="form-control" name="age" required>
+                            <div class="col-6">
+                                <div class="form-group col-lg-6 col-sm-12">
+                                    <label>Age</label>
+                                    <input type="number" class="form-control" name="age" required>
+                                </div>
+                                <div class="form-group col-lg-6 col-sm-12">
+                                    <label>Gender</label>
+                                    <select class="form-control" name="gender" required>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label>Corp</label>
@@ -82,14 +92,6 @@
                                     <option value="wife">Wife</option>
                                     <option value="brother" >Brother</option>
                                     <option value="sister" >Sister</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-lg-6 col-sm-12">
-                                <label>Gender</label>
-                                <select class="form-control" name="gender" required>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
                                 </select>
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">

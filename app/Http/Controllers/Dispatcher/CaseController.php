@@ -70,26 +70,26 @@ class CaseController extends Controller
 
 
         if($case->save()){
-            $dispatcher = User::where('role_id', 7)->get();
+            $postsales = User::where('role_id', 9)->get();
 
             // Find the next available  member with is_next = true
-            $next_member_assign = $dispatcher->where('is_next', true)->first();
+            $next_member_assign = $postsales->where('is_next', true)->first();
 
             // If no member is marked as next, restart and assign the first one
             if (!$next_member_assign) {
-                $next_member_assign = $dispatcher->first(); // Get the first member
+                $next_member_assign = $postsales->first(); // Get the first member
             }
 
             $case->assign_member_id = $next_member_assign->id;
             $case->save();
 
             // Reset is_next for all members
-            User::where('role_id', 7)->update(['is_next' => false]);
+            User::where('role_id', 9)->update(['is_next' => false]);
 
             // Set is_next to true for the next  member in the list
-            $next_member_index = $dispatcher->search($next_member_assign); // Get the index of the current member
-            $next_member_index = ($next_member_index + 1) % $dispatcher->count(); // Move to the next member or reset to the first one
-            $next_user = $dispatcher->get($next_member_index); // Get the next  member
+            $next_member_index = $postsales->search($next_member_assign); // Get the index of the current member
+            $next_member_index = ($next_member_index + 1) % $postsales->count(); // Move to the next member or reset to the first one
+            $next_user = $postsales->get($next_member_index); // Get the next  member
             $next_user->is_next = true;
             $next_user->save(); // Save the is_next flag
         }

@@ -7,5 +7,7 @@ use Illuminate\Http\Request;
 
 class PostSalesController extends Controller
 {
-    //
+    public function dashboard(){
+        return view('postsales.dashboard');
+    }
 }
