@@ -67,8 +67,9 @@ class WalletController extends Controller
         $wallet->msg = $request->msg;
 
         if ($request->hasFile('payment_proof')) {
-            $wallet->payment_proof = $request->file('public/payment_proof')->store('payment_proofs');
+            $wallet->payment_proof = $request->file('payment_proof')->store('payment_proofs', 'public');
         }
+
 
         $wallet->save();
         $user->save(); // Save the user to reflect the wallet deduction
