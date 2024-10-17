@@ -56,7 +56,7 @@ class CaseController extends Controller
         $request->validate([
             'pre_courier_no' => 'required|string',
             'pre_courier_date' => 'required|date',
-            'pre_dispatch_pdf_attachment' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'pre_dispatch_pdf_attachment' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:15360',
         ]);
 
         $case = Cases::findOrFail($id);

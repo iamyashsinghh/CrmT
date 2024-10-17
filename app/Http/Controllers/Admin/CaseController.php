@@ -31,10 +31,10 @@ class CaseController extends Controller
             'dod_time' => 'nullable|date_format:H:i',
             'corp' => 'nullable|string|max:255',
             'relation' => 'nullable|string|max:255',
-            'aadhar_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'pan_card' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'cancelled_cheque' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'policy' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'aadhar_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'pan_card' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'cancelled_cheque' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'policy' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
         ]);
 
         $validated['created_by'] = $auth_user->id;
@@ -64,6 +64,8 @@ class CaseController extends Controller
     public function ajax_list(Request $request)
     {
         $auth_user = Auth::guard('Admin')->user();
+
+        // Fetch the necessary fields, including 'created_by'
         $cases = Cases::select([
             'cases.id',
             'cases.case_code',
@@ -75,12 +77,14 @@ class CaseController extends Controller
             'cases.gender',
             'cases.doa',
             'cases.dod',
+            'cases.created_by', // Ensure this is included
         ])
-            ->with(['user:id,name']);
+        ->with(['user:id,f_name']); // Use the 'user' relationship for the creator
 
         return dataTables()->of($cases)
             ->addColumn('created_by', function ($case) {
-                return $case->user ? $case->user->name : 'N/A';
+                // Access the 'user' relation to get the creator's name
+                return $case->user ? $case->user->f_name : 'N/A';
             })
             ->addColumn('actions', function ($case) {
                 return '<a href="' . route('admin.case.show', $case->id) . '" class="btn btn-info">View</a>';
@@ -88,11 +92,39 @@ class CaseController extends Controller
             ->make(true);
     }
 
+
     public function show($id)
     {
         $case = Cases::findOrFail($id);
         $tpa_roles = User::where('role_id', 8)->get();
-        return view('admin.case.show', compact('case', 'tpa_roles'));
+
+        $query_status = '';
+        if ($case->forward_status == 0 && $case->forward_status_remark == null) {
+            $query_status = 'Pending';
+        } else if ($case->forward_status == 1) {
+            $user = User::where('id', $case->assign_member_id)->first();
+            if ($user->role_id == 2) {
+                $query_status = 'Forwarded To Sales Department';
+            } elseif ($user->role_id == 3) {
+                $query_status = 'Forwarded To Doctor Department';
+            } elseif ($user->role_id == 4) {
+                $query_status = 'Forwarded To Medical Department';
+            } elseif ($user->role_id == 5) {
+                $query_status = 'Forwarded To Billing Department';
+            } elseif ($user->role_id == 6) {
+                $query_status = 'Forwarded To Lab Department';
+            } elseif ($user->role_id == 7) {
+                $query_status = 'Forwarded To Dispatch Department';
+            } elseif ($user->role_id == 9) {
+                $query_status = "Case Status: " . ($case->status ?? 'Processing');
+            }
+        } else if ($case->forward_status == 0 && $case->forward_status_remark !== null) {
+            $query_status = "Hold -- Reason: $case->forward_status_remark";
+        } elseif ($case->forward_status == 2 && $case->forward_status_remark !== null) {
+            $query_status = "Hold -- Reason: $case->forward_status_remark";
+        }
+
+        return view('admin.case.show', compact('case', 'tpa_roles', 'query_status'));
     }
 
     public function cases_status_update($case_id, $status) {
@@ -164,10 +196,12 @@ class CaseController extends Controller
             'tpa' => 'nullable',
             'tpa_allot_after_claim_no_received' => 'nullable',
             'claim_no' => 'nullable',
-            'aadhar_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'pan_card' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'cancelled_cheque' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'policy' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'tpa_type' => 'nullable',
+            'tpa_allot_after_claim_no_received_two' => 'nullable',
+            'aadhar_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'pan_card' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'cancelled_cheque' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'policy' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
         ]);
 
         $case = Cases::findOrFail($id);
@@ -189,6 +223,8 @@ class CaseController extends Controller
         $case->past_diagnosis = $request->past_diagnosis;
         $case->tpa = $request->tpa;
         $case->tpa_allot_after_claim_no_received = $request->tpa_allot_after_claim_no_received;
+        $case->tpa_type = $request->tpa_type;
+        $case->tpa_allot_after_claim_no_received_two = $request->tpa_allot_after_claim_no_received_two;
         $case->claim_no = $request->claim_no;
 
         if ($request->hasFile('aadhar_attachment')) {

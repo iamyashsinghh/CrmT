@@ -47,6 +47,10 @@
                         Forward to {{ $case->get_assign_member->f_name ?: 'N/A' }}</button>
                 @endif
             </div>
+            <div class="d-inline-block">
+                <button class="btn btn-primary btn-xs p-2 m-1"
+                    onclick="handle_view_message(`{{ $query_status ?: 'N/A' }}`)">Case Status</button>
+        </div>
         </div>
         <section class="content">
             <div class="card mb-3">
@@ -228,8 +232,8 @@
                                             </td>
                                             <td>
                                                 @if ($query->query_pdf)
-                                                    <a href="{{ asset('storage/' . $query->query_pdf) }}"
-                                                        target="_blank" class="text-primary">
+                                                    <a href="{{ asset('storage/' . $query->query_pdf) }}" target="_blank"
+                                                        class="text-primary">
                                                         <i class="bi bi-file-earmark-text"></i> View
                                                     </a>
                                                 @else
@@ -360,8 +364,6 @@
                                 <input type="time" class="form-control" name="dod_time" id="dod_time"
                                     value="{{ $case->dod_time }}" required>
                             </div>
-
-
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="sum_insured">SI</label>
                                 <input type="text" class="form-control" name="sum_insured" id="sum_insured"
@@ -386,65 +388,79 @@
                                 <label for="tpa">Tpa</label>
                                 <select class="form-control" name="tpa" id="tpa">
                                     <option>Choose</option>
-                                    <option value="Mediassist" {{ $case->tpa == 'Mediassist' ? 'selected' : '' }}>Mediassist</option>
-                                    <option value="Paramount" {{ $case->tpa == 'Paramount' ? 'selected' : '' }}>Paramount</option>
+                                    <option value="Mediassist" {{ $case->tpa == 'Mediassist' ? 'selected' : '' }}>
+                                        Mediassist</option>
+                                    <option value="Paramount" {{ $case->tpa == 'Paramount' ? 'selected' : '' }}>Paramount
+                                    </option>
                                     <option value="Raksha" {{ $case->tpa == 'Raksha' ? 'selected' : '' }}>Raksha</option>
                                     <option value="Hdfc" {{ $case->tpa == 'Hdfc' ? 'selected' : '' }}>Hdfc</option>
                                     <option value="Digit" {{ $case->tpa == 'Digit' ? 'selected' : '' }}>Digit</option>
-                                    <option value="Good health" {{ $case->tpa == 'Good health' ? 'selected' : '' }}>Good health</option>
+                                    <option value="Good health" {{ $case->tpa == 'Good health' ? 'selected' : '' }}>Good
+                                        health</option>
                                     <option value="Icici" {{ $case->tpa == 'Icici' ? 'selected' : '' }}>Icici</option>
                                     <option value="Bajaj" {{ $case->tpa == 'Bajaj' ? 'selected' : '' }}>Bajaj</option>
                                     <option value="Vidal" {{ $case->tpa == 'Vidal' ? 'selected' : '' }}>Vidal</option>
                                     <option value="Hitpa" {{ $case->tpa == 'Hitpa' ? 'selected' : '' }}>Hitpa</option>
-                                    <option value="Health india" {{ $case->tpa == 'Health india' ? 'selected' : '' }}>Health india</option>
-                                    <option value="Ericson" {{ $case->tpa == 'Ericson' ? 'selected' : '' }}>Ericson</option>
-                                    <option value="Universal sampoo" {{ $case->tpa == 'Universal sampoo' ? 'selected' : '' }}>Universal sampoo</option>
-                                    <option value="Nivs bupa" {{ $case->tpa == 'Nivs bupa' ? 'selected' : '' }}>Nivs bupa</option>
+                                    <option value="Health india" {{ $case->tpa == 'Health india' ? 'selected' : '' }}>
+                                        Health india</option>
+                                    <option value="Ericson" {{ $case->tpa == 'Ericson' ? 'selected' : '' }}>Ericson
+                                    </option>
+                                    <option value="Universal sampoo"
+                                        {{ $case->tpa == 'Universal sampoo' ? 'selected' : '' }}>Universal sampoo</option>
+                                    <option value="Nivs bupa" {{ $case->tpa == 'Nivs bupa' ? 'selected' : '' }}>Nivs bupa
+                                    </option>
                                     <option value="Navi" {{ $case->tpa == 'Navi' ? 'selected' : '' }}>Navi</option>
-                                    <option value="Chola ms" {{ $case->tpa == 'Chola ms' ? 'selected' : '' }}>Chola ms</option>
+                                    <option value="Chola ms" {{ $case->tpa == 'Chola ms' ? 'selected' : '' }}>Chola ms
+                                    </option>
                                     <option value="Care" {{ $case->tpa == 'Care' ? 'selected' : '' }}>Care</option>
-                                    <option value="Aditya birla" {{ $case->tpa == 'Aditya birla' ? 'selected' : '' }}>Aditya birla</option>
-                                    <option value="East west" {{ $case->tpa == 'East west' ? 'selected' : '' }}>East west</option>
-                                    <option value="Md india" {{ $case->tpa == 'Md india' ? 'selected' : '' }}>Md india</option>
+                                    <option value="Aditya birla" {{ $case->tpa == 'Aditya birla' ? 'selected' : '' }}>
+                                        Aditya birla</option>
+                                    <option value="East west" {{ $case->tpa == 'East west' ? 'selected' : '' }}>East west
+                                    </option>
+                                    <option value="Md india" {{ $case->tpa == 'Md india' ? 'selected' : '' }}>Md india
+                                    </option>
                                 </select>
                             </div>
-
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="claim_no">Claim No</label>
-                                <input type="text" class="form-control" name="claim_no"
-                                    id="claim_no"
+                                <input type="text" class="form-control" name="claim_no" id="claim_no"
                                     value="{{ $case->claim_no }}">
                             </div>
-
                             <div class="form-group col-lg-6 col-sm-12">
-                                <label for="tpa_type">TPA Type</label>
+                                <label for="tpa_type">Approved Type</label>
                                 <select class="form-control" name="tpa_type" id="tpa_type">
                                     <option value="" selected disabled>Choose TPA Type</option>
-                                    <option value="direct" {{ $case->tpa_type == 'direct' ? 'selected' : '' }}>Direct</option>
-                                    <option value="first" {{ $case->tpa_type == 'first' ? 'selected' : '' }}>First</option>
+                                    <option value="direct" {{ $case->tpa_type == 'direct' ? 'selected' : '' }}>Direct
+                                    </option>
+                                    <option value="first" {{ $case->tpa_type == 'first' ? 'selected' : '' }}>First
+                                    </option>
                                 </select>
                             </div>
-
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="tpa_allot_after_claim_no_received">Alot Tpa</label>
-                                <select class="form-control" name="tpa_allot_after_claim_no_received" id="tpa_allot_after_claim_no_received">
+                                <select class="form-control" name="tpa_allot_after_claim_no_received"
+                                    id="tpa_allot_after_claim_no_received">
                                     <option value="" selected disabled></option>
                                     @foreach ($tpa_roles as $tpa)
                                         <option value="{{ $tpa->id }}"
-                                            {{ $case->tpa_allot_after_claim_no_received == $tpa->id ? 'selected' : '' }}>{{ $tpa->f_name }}</option>
+                                            {{ $case->tpa_allot_after_claim_no_received == $tpa->id ? 'selected' : '' }}>
+                                            {{ $tpa->f_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-lg-6 col-sm-12" id="tpa_allot_after_claim_no_received_two_container" style="display: none;">
+                            <div class="form-group col-lg-6 col-sm-12"
+                                id="tpa_allot_after_claim_no_received_two_container" style="display: none;">
                                 <label for="tpa_allot_after_claim_no_received_two">Alot TPA(Two)</label>
-                                <select class="form-control" name="tpa_allot_after_claim_no_received_two" id="tpa_allot_after_claim_no_received_two">
+                                <select class="form-control" name="tpa_allot_after_claim_no_received_two"
+                                    id="tpa_allot_after_claim_no_received_two">
                                     <option value="" selected disabled></option>
                                     @foreach ($tpa_roles as $tpa)
-                                        <option value="{{ $tpa->id }}" {{ $case->tpa_allot_after_claim_no_received_two == $tpa->id ? 'selected' : '' }}>{{ $tpa->f_name }}</option>
+                                        <option value="{{ $tpa->id }}"
+                                            {{ $case->tpa_allot_after_claim_no_received_two == $tpa->id ? 'selected' : '' }}>
+                                            {{ $tpa->f_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="aadhar_attachment">Aadhar Attachment</label>
                                 <input type="file" class="form-control" name="aadhar_attachment"
@@ -512,19 +528,20 @@
                     }
                 });
             });
-            // Show or hide the additional TPA field based on TPA Type selection
-        $('#tpa_type').change(function() {
-            if ($(this).val() === 'first') {
-                $('#tpa_allot_after_claim_no_received_two_container').show();
-            } else {
-                $('#tpa_allot_after_claim_no_received_two_container').hide();
-            }
-        });
 
-        // Automatically show the TPA field if "First" is already selected
-        if ($('#tpa_type').val() === 'first') {
-            $('#tpa_allot_after_claim_no_received_two_container').show();
-        }
+            // Show or hide the additional TPA field based on TPA Type selection
+            $('#tpa_type').change(function() {
+                if ($(this).val() === 'first') {
+                    $('#tpa_allot_after_claim_no_received_two_container').show();
+                } else {
+                    $('#tpa_allot_after_claim_no_received_two_container').hide();
+                }
+            });
+
+            // Automatically show the TPA field if "First" is already selected
+            if ($('#tpa_type').val() === 'first') {
+                $('#tpa_allot_after_claim_no_received_two_container').show();
+            }
 
         });
     </script>

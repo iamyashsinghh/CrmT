@@ -33,7 +33,7 @@ $route_name = Route::currentRouteName();
                 </li>
                 <li class="nav-item">
                     <a href="{{route('admin.case.index')}}" class="nav-link {{ strpos($route_name, 'cases') !== false ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-users"></i>
+                        <i class="nav-icon fa-solid fa-file"></i>
                         <p>Cases</p>
                     </a>
                 </li>
@@ -41,6 +41,12 @@ $route_name = Route::currentRouteName();
                     <a href="{{route('admin.users.index')}}" class="nav-link {{ strpos($route_name, 'users') !== false ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>Users</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('admin.wallets.index')}}" class="nav-link {{$uri == "wallets" ? 'active' : ''}}">
+                        <i class="nav-icon fas fa-wallet"></i>
+                        <p>Wallet</p>
                     </a>
                 </li>
             </ul>

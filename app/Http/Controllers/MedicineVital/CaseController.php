@@ -54,8 +54,8 @@ class CaseController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'medicine_vitals_attached' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'medicine_detail' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'medicine_vitals_attached' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'medicine_detail' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
         ]);
 
         $case = Cases::findOrFail($id);

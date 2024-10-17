@@ -11,7 +11,6 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    // Display list of users
     public function index()
     {
         $page_heading = 'Users List';
@@ -19,13 +18,11 @@ class UserController extends Controller
         return view('admin.users.index', compact('page_heading', 'roles'));
     }
 
-    // Get users for DataTable (AJAX call)
     public function getUsers(Request $request)
     {
-        $users = User::with('get_role') // Ensure that this relationship is correct
+        $users = User::with('get_role')
             ->select(['id', 'profile_image', 'f_name', 'l_name', 'email', 'role_id', 'created_at']);
 
-        // Apply role filter if a role is selected
         if ($request->has('role') && !empty($request->role)) {
             $users = $users->whereHas('get_role', function ($query) use ($request) {
                 $query->where('name', $request->role);
@@ -55,87 +52,113 @@ class UserController extends Controller
     }
 
     public function manage_process(Request $request, $id = null)
-{
-    // Validation rules
-    $validate = Validator::make($request->all(), [
-        'f_name' => 'required|string|min:3|max:255',
-        'l_name' => 'required|string|min:3|max:255',
-        'email' => [
-            'required',
-            'email',
-            Rule::unique('users')->ignore($id)->whereNull('deleted_at') // Ignore soft-deleted users
-        ],
-        'role_id' => 'required|exists:roles,id', // Role must be valid
-        'password' => $id ? 'nullable|min:6' : 'required|min:6', // Password required for new user, optional for updates
-    ]);
-
-    // Check validation errors
-    if ($validate->fails()) {
-        return redirect()->back()->withErrors($validate)->withInput();
-    }
-
-    // Handle soft-deleted user with the same email
-    $softDeletedUser = User::withTrashed()->where('email', $request->email)->first();
-
-    if ($softDeletedUser && $softDeletedUser->trashed()) {
-        // Restore the soft-deleted user instead of creating a new one
-        $softDeletedUser->restore();
-        $softDeletedUser->update([
-            'f_name' => $request->f_name,
-            'l_name' => $request->l_name,
-            'role_id' => $request->role_id,
+    {
+        $validate = Validator::make($request->all(), [
+            'f_name' => 'required|string|min:3|max:255',
+            'l_name' => 'required|string|min:3|max:255',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore($id)->whereNull('deleted_at')
+            ],
+            'role_id' => 'required|exists:roles,id',
+            'password' => $id ? 'nullable|min:6' : 'required|min:6',
+            'commission_main' => 'required_if:role_id,8,10|nullable|numeric|min:0|max:100',
+            'commission_first' => 'required_if:role_id,8|nullable|numeric|min:0|max:100',
+            'commission_second' => 'required_if:role_id,8|nullable|numeric|min:0|max:100',
         ]);
 
-        // Only update password if provided
-        if ($request->filled('password')) {
-            $softDeletedUser->update(['password' => bcrypt($request->password)]);
+        if ($validate->fails()) {
+            return redirect()->back()->withErrors($validate)->withInput();
         }
 
-        // Return success message for restored user
+        $softDeletedUser = User::withTrashed()->where('email', $request->email)->first();
+
+        if ($softDeletedUser && $softDeletedUser->trashed()) {
+            $softDeletedUser->restore();
+            $softDeletedUser->update([
+                'f_name' => $request->f_name,
+                'l_name' => $request->l_name,
+                'role_id' => $request->role_id,
+            ]);
+
+            if ($request->role_id == 10 || $request->role_id == 8) {
+                $softDeletedUser->update([
+                    'commission_main' => $request->commission_main,
+                ]);
+            }
+            if ($request->role_id == 8) {
+                $softDeletedUser->update([
+                    'commission_first' => $request->commission_first,
+                    'commission_second' => $request->commission_second,
+                ]);
+            }
+
+            if ($request->filled('password')) {
+                $softDeletedUser->update(['password' => bcrypt($request->password)]);
+            }
+
+            return redirect()->route('admin.users.index')->with('status', [
+                'alert_type' => 'success',
+                'message' => 'User restored and updated successfully!',
+            ]);
+        }
+
+        if ($id) {
+            $user = User::findOrFail($id);
+            $user->update([
+                'f_name' => $request->f_name,
+                'l_name' => $request->l_name,
+                'email' => $request->email,
+                'role_id' => $request->role_id,
+            ]);
+
+            if ($request->role_id == 10 || $request->role_id == 8) {
+                $user->update([
+                    'commission_main' => $request->commission_main,
+                ]);
+            }
+            if ($request->role_id == 8) {
+                $user->update([
+                    'commission_first' => $request->commission_first,
+                    'commission_second' => $request->commission_second,
+                ]);
+            }
+
+            if ($request->filled('password')) {
+                $user->update(['password' => bcrypt($request->password)]);
+            }
+
+            $message = 'User updated successfully!';
+        } else {
+            $user = User::create([
+                'f_name' => $request->f_name,
+                'l_name' => $request->l_name,
+                'email' => $request->email,
+                'role_id' => $request->role_id,
+                'password' => bcrypt($request->password),
+            ]);
+
+            if ($request->role_id == 10 || $request->role_id == 8) {
+                $user->update([
+                    'commission_main' => $request->commission_main,
+                ]);
+            }
+            if ($request->role_id == 8) {
+                $user->update([
+                    'commission_first' => $request->commission_first,
+                    'commission_second' => $request->commission_second,
+                ]);
+            }
+
+            $message = 'User created successfully!';
+        }
+
         return redirect()->route('admin.users.index')->with('status', [
             'alert_type' => 'success',
-            'message' => 'User restored and updated successfully!',
+            'message' => $message,
         ]);
     }
-
-    // Update existing user
-    if ($id) {
-        $user = User::findOrFail($id);
-        $user->update([
-            'f_name' => $request->f_name,
-            'l_name' => $request->l_name,
-            'email' => $request->email,
-            'role_id' => $request->role_id, // Assign new role if updated
-        ]);
-
-        // Only update password if provided
-        if ($request->filled('password')) {
-            $user->update(['password' => bcrypt($request->password)]);
-        }
-
-        // Return success message for update
-        $message = 'User updated successfully!';
-    } else {
-        // Create new user
-        $user = User::create([
-            'f_name' => $request->f_name,
-            'l_name' => $request->l_name,
-            'email' => $request->email,
-            'role_id' => $request->role_id, // Assign role to new user
-            'password' => bcrypt($request->password),
-        ]);
-
-        // Return success message for creation
-        $message = 'User created successfully!';
-    }
-
-    // Redirect to users list with success message
-    return redirect()->route('admin.users.index')->with('status', [
-        'alert_type' => 'success',
-        'message' => $message,
-    ]);
-}
-
 
 
     // Delete user

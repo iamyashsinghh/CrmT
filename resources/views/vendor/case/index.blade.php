@@ -58,7 +58,7 @@
                                 <label>Name</label>
                                 <input type="text" class="form-control" name="name" required>
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 row">
                                 <div class="form-group col-lg-6 col-sm-12">
                                     <label>Age</label>
                                     <input type="number" class="form-control" name="age" required>

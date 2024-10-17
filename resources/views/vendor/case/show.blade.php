@@ -11,13 +11,17 @@
     <div class="content-wrapper pb-5">
         <section class="content-header">
             <div class="container-fluid">
-                <h1 class="m-0">Case Details</h1>
+                <div class="card-header mb-3">
+                    <div class="d-inline-block">
+                            <button class="btn btn-primary btn-xs p-2 m-1"
+                                onclick="handle_view_message(`{{ $query_status ?: 'N/A' }}`)">Case Status</button>
+                    </div>
+                </div>
             </div>
         </section>
 
         <section class="content">
             <div class="container-fluid">
-
                 <div class="card mb-3">
                     <div class="card-header text-light" style="background-color: var(--wb-renosand);">
                         <h3 class="card-title">Case Information</h3>
@@ -112,9 +116,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
 
                 <div class="card mb-5">
                     <div class="card-header text-light" style="background-color: var(--wb-renosand);">

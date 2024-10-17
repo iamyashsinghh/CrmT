@@ -26,6 +26,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Case Code</th>
+                                <th>Created By</th>
                                 <th>Name</th>
                                 <th>Age</th>
                                 <th>Corp</th>
@@ -72,15 +73,15 @@
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="relation">Relation</label>
                                 <select class="form-control" name="relation" id="relation" required>
-                                    <option value="self" >Self</option>
-                                    <option value="mother" >Mother</option>
-                                    <option value="father" >Father</option>
-                                    <option value="daughter" >Daughter</option>
+                                    <option value="self">Self</option>
+                                    <option value="mother">Mother</option>
+                                    <option value="father">Father</option>
+                                    <option value="daughter">Daughter</option>
                                     <option value="son">Son</option>
-                                    <option value="husband" >Husband</option>
+                                    <option value="husband">Husband</option>
                                     <option value="wife">Wife</option>
-                                    <option value="brother" >Brother</option>
-                                    <option value="sister" >Sister</option>
+                                    <option value="brother">Brother</option>
+                                    <option value="sister">Sister</option>
                                 </select>
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">
@@ -156,6 +157,11 @@
                         sortable: true
                     },
                     {
+                        data: 'created_by',
+                        searchable: true,
+                        sortable: true
+                    },
+                    {
                         data: 'name',
                         searchable: true,
                         sortable: true
@@ -209,9 +215,9 @@
                 autoWidth: false
             });
             $(document).on('click', '.btn-view-case', function() {
-    var caseId = $(this).data('id'); // Get case ID from data attribute
-    window.location.href = '/admin/cases/' + caseId; // Redirect to case show page
-});
+                var caseId = $(this).data('id');
+                window.location.href = '/admin/cases/' + caseId;
+            });
 
 
             $('#createCaseForm').submit(function(e) {

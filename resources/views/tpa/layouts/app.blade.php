@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('adminlte/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') | {{ env('APP_NAME') }}</title>
     @yield('header-css')
     @yield('header-script')
@@ -35,8 +36,8 @@
 
 <body class="sidebar-mini layout-fixed">
     @include('includes.preloader')
-    @include('admin.layouts.navbar')
-    @include('admin.layouts.sidebar')
+    @include('tpa.layouts.navbar')
+    @include('tpa.layouts.sidebar')
 
     <div class="wrapper">
         @section('main')

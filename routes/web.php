@@ -48,6 +48,12 @@ Route::prefix('/admin')->middleware(['auth', 'role:Admin'])->group(function () {
     Route::post('/cases/{id}/update', [Controllers\Admin\CaseController::class, 'update'])->name('admin.case.update');
     Route::get('/cases-status-update/{cases_id}/{status?}', [Controllers\Admin\CaseController::class, 'cases_status_update'])->name('admin.caseStatus.update');
     Route::post('/cases-status-remark', [Controllers\Admin\CaseController::class, 'cases_status_remark'])->name('admin_cases_status_remark');
+
+
+    Route::get('wallets', [Controllers\Admin\WalletController::class, 'index'])->name('admin.wallets.index');
+    Route::post('wallets', [Controllers\Admin\WalletController::class, 'store'])->name('admin.wallets.store');
+    Route::get('wallets/ajax', [Controllers\Admin\WalletController::class, 'ajax'])->name('admin.wallets.ajax');
+
 });
 
 
@@ -123,6 +129,13 @@ Route::prefix('/postsales')->middleware(['auth', 'role:PostSales'])->group(funct
 // Routes for TPA Role
 Route::prefix('/tpa')->middleware(['auth', 'role:TPA'])->group(function () {
     Route::get('/dashboard', [Controllers\TPA\TpaController::class, 'dashboard'])->name('tpa.dashboard');
+    Route::get('/cases/ajaxlist', [Controllers\TPA\CaseController::class, 'ajax_list'])->name('tpa_case_ajax');
+    Route::get('/cases', [Controllers\TPA\CaseController::class, 'index'])->name('tpa.case.index');
+    Route::get('/cases/{id}', [Controllers\TPA\CaseController::class, 'show'])->name('tpa.case.show');
+
+    Route::get('wallets', [Controllers\TPA\WalletController::class, 'index'])->name('tpa.wallets.index');
+    Route::get('wallets/ajax', [Controllers\TPA\WalletController::class, 'ajax'])->name('tpa.wallets.ajax');
+
 });
 
 // Routes for Vendor Role
@@ -135,4 +148,7 @@ Route::prefix('/vendor')->middleware(['auth', 'role:Vendor'])->group(function ()
         Route::get('/cases/{id}', [Controllers\Vendor\CaseController::class, 'show'])->name('vendor.case.show');
         Route::post('/vendor/cases/{id}/update', [Controllers\Vendor\CaseController::class, 'update'])->name('vendor.case.update');
         Route::post('/cases/{case}/upload', [Controllers\Vendor\CaseController::class, 'upload'])->name('vendor.case.upload');
+
+        Route::get('wallets', [Controllers\Vendor\WalletController::class, 'index'])->name('vendor.wallets.index');
+        Route::get('wallets/ajax', [Controllers\Vendor\WalletController::class, 'ajax'])->name('vendor.wallets.ajax');
 });

@@ -7,5 +7,7 @@ use Illuminate\Http\Request;
 
 class TpaController extends Controller
 {
-    //
+    public function dashboard(){
+        return view('tpa.dashboard');
+    }
 }

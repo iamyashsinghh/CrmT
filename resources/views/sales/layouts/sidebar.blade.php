@@ -29,7 +29,7 @@ $uri = end($uri_arr);
                 </li>
                 <li class="nav-item">
                     <a href="{{route('sales.case.index')}}" class="nav-link {{$uri == "cases" ? 'active' : ''}}">
-                        <i class="nav-icon fas fa-users"></i>
+                        <i class="nav-icon fa-solid fa-file"></i>
                         <p>Cases</p>
                     </a>
                 </li>

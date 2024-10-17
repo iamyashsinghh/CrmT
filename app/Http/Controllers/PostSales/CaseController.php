@@ -31,13 +31,14 @@ class CaseController extends Controller
             'cases.gender',
             'cases.doa',
             'cases.dod',
+            'cases.created_by'
         ])
-            ->with(['user:id,name'])
+            ->with(['user:id,f_name'])
             ->where('assign_member_id', $auth_user->id);
 
         return dataTables()->of($cases)
             ->addColumn('created_by', function ($case) {
-                return $case->user ? $case->user->name : 'N/A';
+                return $case->user ? $case->user->f_name : 'N/A';
             })
             ->addColumn('actions', function ($case) {
                 return '<a href="' . route('postsales.case.show', $case->id) . '" class="btn btn-info">View</a>';
@@ -58,13 +59,54 @@ class CaseController extends Controller
             'claim_no' => 'required|string',
             'approved_amt' => 'required|string',
             'status' => 'nullable|string',
-            'patient_details_form' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'patient_details_form' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
         ]);
         $case = Cases::findOrFail($id);
         $case->claim_no = $request->claim_no;
         $case->status = $request->status;
         $case->approved_amt = $request->approved_amt;
 
+        if ($request->status == 'Paid') {
+            $approvedAmt = $request->approved_amt;
+
+            // for vendor
+            $mainVendorUser = User::where('id', $case->created_by)->first();
+            if ($mainVendorUser) {
+                $commissionMain = ($mainVendorUser->commission_main / 100) * $approvedAmt;
+                $case->commission_vendor = $commissionMain;
+                $mainVendorUser->wallet += $commissionMain;
+                $mainVendorUser->save();
+            }
+
+            // For tpa
+            $get_the_tpa_commission_type = $case->tpa_type;
+            if ($get_the_tpa_commission_type === 'direct') {
+                $mainTpaUser = User::where('id', $case->tpa_allot_after_claim_no_received)->first();
+                if ($mainTpaUser) {
+                    $commissionMain = ($mainTpaUser->commission_main / 100) * $approvedAmt;
+                    $case->commission_main_tpa = $commissionMain;
+                    $mainTpaUser->wallet += $commissionMain;
+                    $mainTpaUser->save();
+                }
+            } elseif ($get_the_tpa_commission_type === 'first') {
+                $firstTpaUser = User::where('id', $case->tpa_allot_after_claim_no_received)->first();
+                $secondTpaUser = User::where('id', $case->tpa_allot_after_claim_no_received_two)->first();
+
+                if ($firstTpaUser && $secondTpaUser) {
+                    $commissionFirst = ($firstTpaUser->commission_first / 100) * $approvedAmt;
+                    $commissionSecond = ($secondTpaUser->commission_second / 100) * $approvedAmt;
+
+                    $case->commission_first_tpa = $commissionFirst;
+                    $case->commission_second_tpa = $commissionSecond;
+
+                    $firstTpaUser->wallet += $commissionFirst;
+                    $secondTpaUser->wallet += $commissionSecond;
+
+                    $firstTpaUser->save();
+                    $secondTpaUser->save();
+                }
+            }
+        }
         if ($request->hasFile('patient_details_form')) {
             $case->patient_details_form = $request->file('patient_details_form')->store('attachments', 'public');
         }
@@ -77,30 +119,24 @@ class CaseController extends Controller
 
     public function query_add(Request $request)
     {
-        // Validate the request
         $request->validate([
             'query' => 'required|string',
-            'case_id' => 'required|integer', // Validate case_id as it is an integer field
-            'query_pdf' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048', // Limit file types and size
+            'case_id' => 'required|integer',
+            'query_pdf' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
         ]);
 
-        // Get the authenticated user
         $auth_user = Auth::guard('PostSales')->user();
 
-        // Create a new instance of the Query model
         $query = new Query();
-        $query->case_id = $request->input('case_id'); // Use input() to retrieve specific value safely
+        $query->case_id = $request->input('case_id');
         $query->created_by = $auth_user->id;
-        $query->query = $request->input('query'); // Use input() to safely retrieve the value
+        $query->query = $request->input('query');
 
-        // Handle file upload
         if ($request->hasFile('query_pdf')) {
-            // Store the file and assign the path to the query_pdf field
             $filePath = $request->file('query_pdf')->store('attachments', 'public');
-            $query->query_pdf = $filePath; // Save the path to the database
+            $query->query_pdf = $filePath;
         }
 
-        // Save the query and handle the response
         try {
             $query->save();
             session()->flash('status', [
@@ -118,6 +154,4 @@ class CaseController extends Controller
 
         return redirect()->back();
     }
-
-
 }

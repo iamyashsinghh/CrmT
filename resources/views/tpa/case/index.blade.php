@@ -1,4 +1,4 @@
-@extends('postsales.layouts.app')
+@extends('tpa.layouts.app')
 
 @section('title', $page_heading)
 
@@ -16,6 +16,7 @@
                 </div>
             </div>
         </section>
+
         <section class="content">
             <div class="container-fluid">
                 <div class="table-responsive">
@@ -24,7 +25,6 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Case Code</th>
-                                <th>Created By</th>
                                 <th>Name</th>
                                 <th>Age</th>
                                 <th>Corp</th>
@@ -52,7 +52,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ route('postsales_case_ajax') }}`,
+                    url: `{{ route('tpa_case_ajax') }}`,
                     dataSrc: 'data'
                 },
                 columns: [{
@@ -62,11 +62,6 @@
                     },
                     {
                         data: 'case_code',
-                        searchable: true,
-                        sortable: true
-                    },
-                    {
-                        data: 'created_by',
                         searchable: true,
                         sortable: true
                     },
@@ -125,7 +120,7 @@
             });
             $(document).on('click', '.btn-view-case', function() {
                 var caseId = $(this).data('id'); // Get case ID from data attribute
-                window.location.href = '/postsales/cases/' + caseId; // Redirect to case show page
+                window.location.href = '/tpa/cases/' + caseId; // Redirect to case show page
             });
         });
     </script>
