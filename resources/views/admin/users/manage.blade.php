@@ -121,6 +121,16 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <div id="vendorWalletPassContainer" class="form-group col-6" style="display: none;">
+                                    <label for="v_password">Vendor Wallet Password</label>
+                                    <input type="text"
+                                        class="form-control @error('v_password') is-invalid @enderror"
+                                        id="v_password" name="v_password"
+                                        value="">
+                                    @error('v_password')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
 
 
@@ -141,10 +151,12 @@
                 $('#commissionMainContainer').hide();
                 $('#commissionFirstContainer').hide();
                 $('#commissionSecondContainer').hide();
+                $('#vendorWalletPassContainer').hide();
 
                 if (roleId == 10) {
                     $('#commissionFieldsContainer').show();
                     $('#commissionMainContainer').show();
+                    $('#vendorWalletPassContainer').show();
                 } else if (roleId == 8) {
                     $('#commissionFieldsContainer').show();
                     $('#commissionMainContainer').show();

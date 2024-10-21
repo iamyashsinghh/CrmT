@@ -157,4 +157,9 @@ Route::prefix('/vendor')->middleware(['auth', 'role:Vendor'])->group(function ()
     Route::get('wallets/ajax', [Controllers\Vendor\WalletController::class, 'ajax'])->name('vendor.wallets.ajax');
     Route::post('wallets/store', [Controllers\Vendor\WalletController::class, 'store'])->name('vendor.wallets.store');
 
+    Route::post('/verify-password', [Controllers\Vendor\PasswordController::class, 'verifyPassword'])->name('verify.vendor.wallets.index');
+    Route::get('/check-password-session', [Controllers\Vendor\PasswordController::class, 'checkPasswordSession'])->name('check.vendor.password.session');
+
+
+
 });

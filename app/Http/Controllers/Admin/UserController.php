@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -85,6 +86,8 @@ class UserController extends Controller
             if ($request->role_id == 10 || $request->role_id == 8) {
                 $softDeletedUser->update([
                     'commission_main' => $request->commission_main,
+                    // Only update v_password if it's not empty
+                    'v_password' => !empty($request->v_password) ? Hash::make($request->v_password) : $softDeletedUser->v_password,
                 ]);
             }
             if ($request->role_id == 8) {
@@ -116,6 +119,8 @@ class UserController extends Controller
             if ($request->role_id == 10 || $request->role_id == 8) {
                 $user->update([
                     'commission_main' => $request->commission_main,
+                    // Only update v_password if it's not empty
+                    'v_password' => !empty($request->v_password) ? Hash::make($request->v_password) : $user->v_password,
                 ]);
             }
             if ($request->role_id == 8) {
@@ -142,6 +147,8 @@ class UserController extends Controller
             if ($request->role_id == 10 || $request->role_id == 8) {
                 $user->update([
                     'commission_main' => $request->commission_main,
+                    // Only update v_password if it's not empty
+                    'v_password' => !empty($request->v_password) ? Hash::make($request->v_password) : null,
                 ]);
             }
             if ($request->role_id == 8) {
@@ -159,6 +166,7 @@ class UserController extends Controller
             'message' => $message,
         ]);
     }
+
 
 
     // Delete user

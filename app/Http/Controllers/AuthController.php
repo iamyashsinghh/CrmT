@@ -39,6 +39,7 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout(); // Log out the user
+        session()->forget('vendor_password_verified');
         return redirect()->route('home'); // Redirect to the login page
     }
 

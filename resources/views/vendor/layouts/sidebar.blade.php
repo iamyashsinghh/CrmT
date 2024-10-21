@@ -39,7 +39,7 @@ $route_name = Route::currentRouteName();
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('vendor.wallets.index')}}" class="nav-link {{$uri == "wallets" ? 'active' : ''}}">
+                    <a href="{{route('vendor.wallets.index')}}" class="nav-link {{$uri == "wallets" ? 'active' : ''}}"  id="protectedLink">
                         <i class="nav-icon fas fa-wallet"></i>
                         <p>Wallet</p>
                     </a>
@@ -50,6 +50,48 @@ $route_name = Route::currentRouteName();
 </aside>
 
 <script>
+
+document.getElementById('protectedLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    fetch("{{ route('check.vendor.password.session') }}", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.access) {
+            window.location.href = "{{ route('vendor.wallets.index') }}";
+        } else {
+            var password = prompt("Please enter the password to proceed:");
+
+            if (password !== null) {
+                fetch("{{ route('verify.vendor.wallets.index') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({ password: password })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = "{{ route('vendor.wallets.index') }}";
+                    } else {
+                        alert("Incorrect password. Access denied.");
+                    }
+                });
+            }
+        }
+    });
+});
+
+
+
+
     $('.nav-sidebar').tree();
     function initialize_sidebar_collapse() {
         const sidebar_collapsible_elem = document.getElementById('sidebar_collapsible_elem');
