@@ -66,16 +66,20 @@
                             <span class="mx-1"> {{ $case->id }}</span>
                         </div>
                         <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)"> Name: </span>
-                            <span class="mx-1">{{ $case->name }}</span>
-                        </div>
-                        <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Case Code: </span>
                             <span class="mx-1">{{ $case->case_code }}</span>
                         </div>
                         <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)"> Name: </span>
+                            <span class="mx-1">{{ $case->name }}</span>
+                        </div>
+                        <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Age: </span>
                             <span class="mx-1">{{ $case->age }} </span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Gender: </span>
+                            <span class="mx-1">{{ $case->gender }} </span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Corp: </span>
@@ -165,7 +169,17 @@
                                 <span class="text-muted">Not Available</span>
                             @endif
                         </div>
-
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Aadhar Attachment 2: </span>
+                            @if ($case->aadhar_attachment_2)
+                                <a href="{{ asset('storage/' . $case->aadhar_attachment_2) }}" target="_blank"
+                                    class="text-primary">
+                                    <i class="bi bi-file-earmark-text"></i> View
+                                </a>
+                            @else
+                                <span class="text-muted">Not Available</span>
+                            @endif
+                        </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">PAN Card: </span>
                             @if ($case->pan_card)
@@ -465,6 +479,12 @@
                                 <label for="aadhar_attachment">Aadhar Attachment</label>
                                 <input type="file" class="form-control" name="aadhar_attachment"
                                     id="aadhar_attachment">
+                                <small class="text-muted">Leave blank if you don't want to change</small>
+                            </div>
+                            <div class="form-group col-lg-6 col-sm-12">
+                                <label for="aadhar_attachment_2">Aadhar Attachment 2</label>
+                                <input type="file" class="form-control" name="aadhar_attachment_2"
+                                    id="aadhar_attachment_2">
                                 <small class="text-muted">Leave blank if you don't want to change</small>
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">

@@ -22,12 +22,12 @@
                             <span class="mx-1"> {{ $case->id }}</span>
                         </div>
                         <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)"> Name: </span>
-                            <span class="mx-1">{{ $case->name }}</span>
-                        </div>
-                        <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Case Code: </span>
                             <span class="mx-1">{{ $case->case_code }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)"> Name: </span>
+                            <span class="mx-1">{{ $case->name }}</span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Age: </span>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Gender: </span>
-                            <span class="mx-1 badge ">{{ $case->gender }}</span>
+                            <span class="mx-1 ">{{ $case->gender }}</span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)"> Bill Range: </span>
@@ -60,61 +60,6 @@
                     </div>
                 </div>
             </div>
-
-
-            {{-- <div class="card mb-3">
-                <div class="card-header text-light" style="background-color: var(--wb-renosand);">
-                    <h3 class="card-title">Case Information Files</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Aadhar Attachment: </span>
-                            @if ($case->aadhar_attachment)
-                                <a href="{{ asset('storage/' . $case->aadhar_attachment) }}" target="_blank"
-                                    class="text-primary">
-                                    <i class="bi bi-file-earmark-text"></i> View
-                                </a>
-                            @else
-                                <span class="text-muted">Not Available</span>
-                            @endif
-                        </div>
-
-                        <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)">PAN Card: </span>
-                            @if ($case->pan_card)
-                                <a href="{{ asset('storage/' . $case->pan_card) }}" target="_blank"
-                                    class="text-primary">
-                                    <i class="bi bi-file-earmark-text"></i> View
-                                </a>
-                            @else
-                                <span class="text-muted">Not Available</span>
-                            @endif
-                        </div>
-                        <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Cancelled Cheque: </span>
-                            @if ($case->cancelled_cheque)
-                                <a href="{{ asset('storage/' . $case->cancelled_cheque) }}" target="_blank"
-                                    class="text-primary">
-                                    <i class="bi bi-file-earmark-text"></i> View
-                                </a>
-                            @else
-                                <span class="text-muted">Not Available</span>
-                            @endif
-                        </div>
-                        <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Policy: </span>
-                            @if ($case->policy)
-                                <a href="{{ asset('storage/' . $case->policy) }}" target="_blank" class="text-primary">
-                                    <i class="bi bi-file-earmark-text"></i> View
-                                </a>
-                            @else
-                                <span class="text-muted">Not Available</span>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
         </section>
 
         <div class="modal fade" id="cancelRemarkModal" tabindex="-1" aria-labelledby="cancelRemarkModalLabel"

@@ -32,6 +32,7 @@ class CaseController extends Controller
             'corp' => 'nullable|string|max:255',
             'relation' => 'nullable|string|max:255',
             'aadhar_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'aadhar_attachment_2' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
             'pan_card' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
             'cancelled_cheque' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
             'policy' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
@@ -46,6 +47,9 @@ class CaseController extends Controller
 
         if ($request->hasFile('aadhar_attachment')) {
             $case->aadhar_attachment = $request->file('aadhar_attachment')->store('attachments', 'public');
+        }
+        if ($request->hasFile('aadhar_attachment_2')) {
+            $case->aadhar_attachment_2 = $request->file('aadhar_attachment_2')->store('attachments', 'public');
         }
         if ($request->hasFile('pan_card')) {
             $case->pan_card = $request->file('pan_card')->store('attachments', 'public');
@@ -141,6 +145,7 @@ class CaseController extends Controller
             'dod' => 'required|date',
             'dod_time' => 'required',
             'aadhar_attachment' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'aadhar_attachment_2' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
             'pan_card' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
             'cancelled_cheque' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
             'policy' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
@@ -161,6 +166,9 @@ class CaseController extends Controller
 
         if ($request->hasFile('aadhar_attachment')) {
             $case->aadhar_attachment = $request->file('aadhar_attachment')->store('attachments', 'public');
+        }
+        if ($request->hasFile('aadhar_attachment_2')) {
+            $case->aadhar_attachment_2 = $request->file('aadhar_attachment_2')->store('attachments', 'public');
         }
         if ($request->hasFile('pan_card')) {
             $case->pan_card = $request->file('pan_card')->store('attachments', 'public');

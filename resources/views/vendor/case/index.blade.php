@@ -141,6 +141,10 @@
                                 <input type="file" class="form-control" name="aadhar_attachment" id="aadhar_attachment">
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">
+                                <label for="aadhar_attachment_2">Aadhar Attachment 2</label>
+                                <input type="file" class="form-control" name="aadhar_attachment_2" id="aadhar_attachment_2">
+                            </div>
+                            <div class="form-group col-lg-6 col-sm-12">
                                 <label for="pan_card">PAN Card</label>
                                 <input type="file" class="form-control" name="pan_card" id="pan_card">
                             </div>

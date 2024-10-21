@@ -24,12 +24,20 @@
                             <span class="mx-1"> {{ $case->id }}</span>
                         </div>
                         <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Case Code: </span>
+                            <span class="mx-1">{{ $case->case_code }}</span>
+                        </div>
+                        <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)"> Name: </span>
                             <span class="mx-1">{{ $case->name }}</span>
                         </div>
                         <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Case Code: </span>
-                            <span class="mx-1">{{ $case->case_code }}</span>
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Age: </span>
+                            <span class="mx-1">{{ $case->age }} </span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Gender: </span>
+                            <span class="mx-1 ">{{ $case->gender }}</span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Age: </span>

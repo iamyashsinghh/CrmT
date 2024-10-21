@@ -22,12 +22,12 @@
                             <span class="mx-1"> {{ $case->id }}</span>
                         </div>
                         <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)"> Name: </span>
-                            <span class="mx-1">{{ $case->name }}</span>
-                        </div>
-                        <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Case Code: </span>
                             <span class="mx-1">{{ $case->case_code }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)"> Name: </span>
+                            <span class="mx-1">{{ $case->name }}</span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Age: </span>
@@ -125,7 +125,17 @@
                                 <span class="text-muted">Not Available</span>
                             @endif
                         </div>
-
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Aadhar Attachment 2: </span>
+                            @if ($case->aadhar_attachment_2)
+                                <a href="{{ asset('storage/' . $case->aadhar_attachment_2) }}" target="_blank"
+                                    class="text-primary">
+                                    <i class="bi bi-file-earmark-text"></i> View
+                                </a>
+                            @else
+                                <span class="text-muted">Not Available</span>
+                            @endif
+                        </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">PAN Card: </span>
                             @if ($case->pan_card)

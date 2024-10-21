@@ -22,12 +22,12 @@
                             <span class="mx-1"> {{ $case->id }}</span>
                         </div>
                         <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)"> Name: </span>
-                            <span class="mx-1">{{ $case->name }}</span>
-                        </div>
-                        <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Case Code: </span>
                             <span class="mx-1">{{ $case->case_code }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)"> Name: </span>
+                            <span class="mx-1">{{ $case->name }}</span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Age: </span>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Gender: </span>
-                            <span class="mx-1 badge ">{{ $case->gender }}</span>
+                            <span class="mx-1 ">{{ $case->gender }}</span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Date of Admission: </span>
@@ -51,66 +51,11 @@
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Diagnosis: </span>
-                            <span class="mx-1">{{ $case->diagnosis ?? 'N/A'}} </span>
+                            <span class="mx-1">{{ $case->diagnosis ?? 'N/A' }} </span>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-            {{-- <div class="card mb-3">
-                <div class="card-header text-light" style="background-color: var(--wb-renosand);">
-                    <h3 class="card-title">Case Information Files</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Aadhar Attachment: </span>
-                            @if ($case->aadhar_attachment)
-                                <a href="{{ asset('storage/' . $case->aadhar_attachment) }}" target="_blank"
-                                    class="text-primary">
-                                    <i class="bi bi-file-earmark-text"></i> View
-                                </a>
-                            @else
-                                <span class="text-muted">Not Available</span>
-                            @endif
-                        </div>
-
-                        <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)">PAN Card: </span>
-                            @if ($case->pan_card)
-                                <a href="{{ asset('storage/' . $case->pan_card) }}" target="_blank"
-                                    class="text-primary">
-                                    <i class="bi bi-file-earmark-text"></i> View
-                                </a>
-                            @else
-                                <span class="text-muted">Not Available</span>
-                            @endif
-                        </div>
-                        <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Cancelled Cheque: </span>
-                            @if ($case->cancelled_cheque)
-                                <a href="{{ asset('storage/' . $case->cancelled_cheque) }}" target="_blank"
-                                    class="text-primary">
-                                    <i class="bi bi-file-earmark-text"></i> View
-                                </a>
-                            @else
-                                <span class="text-muted">Not Available</span>
-                            @endif
-                        </div>
-                        <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Policy: </span>
-                            @if ($case->policy)
-                                <a href="{{ asset('storage/' . $case->policy) }}" target="_blank" class="text-primary">
-                                    <i class="bi bi-file-earmark-text"></i> View
-                                </a>
-                            @else
-                                <span class="text-muted">Not Available</span>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
         </section>
 
         <div class="modal fade" id="cancelRemarkModal" tabindex="-1" aria-labelledby="cancelRemarkModalLabel"
@@ -120,8 +65,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="cancelRemarkModalLabel">Cancellation Remark</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         @csrf
                         <input type="hidden" name="id" value="{{ $case->id }}">
@@ -141,21 +85,20 @@
         </div>
 
 
-        <div class="modal fade" id="editCaseModal" tabindex="-1" aria-labelledby="editCaseModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="editCaseModal" tabindex="-1" aria-labelledby="editCaseModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <form id="editCaseForm" enctype="multipart/form-data">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="editCaseModalLabel">Edit Case</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body row">
                             <input type="hidden" name="case_id" value="{{ $case->id }}">
                             <div class="form-group col-sm-12 col-lg-6">
                                 <label for="medicine_vitals_attached">Medicine Vitals</label>
-                                <input type="file" class="form-control" name="medicine_vitals_attached" id="medicine_vitals_attached">
+                                <input type="file" class="form-control" name="medicine_vitals_attached"
+                                    id="medicine_vitals_attached">
                             </div>
                             <div class="form-group col-sm-12 col-lg-6">
                                 <label for="medicine_detail">Medicine Details</label>
@@ -195,7 +138,7 @@
                         if (response.success) {
                             $('#editCaseModal').modal('hide');
                             alert(response.message);
-                            window.location.href = `{{route('medicinevital.case.index')}}`;
+                            window.location.href = `{{ route('medicinevital.case.index') }}`;
                         } else {
                             alert('Error: ' + response.message);
                         }

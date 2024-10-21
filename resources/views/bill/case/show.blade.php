@@ -22,12 +22,12 @@
                             <span class="mx-1"> {{ $case->id }}</span>
                         </div>
                         <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)"> Name: </span>
-                            <span class="mx-1">{{ $case->name }}</span>
-                        </div>
-                        <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Case Code: </span>
                             <span class="mx-1">{{ $case->case_code }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)"> Name: </span>
+                            <span class="mx-1">{{ $case->name }}</span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Age: </span>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Gender: </span>
-                            <span class="mx-1 badge ">{{ $case->gender }}</span>
+                            <span class="mx-1 ">{{ $case->gender }}</span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Date of Admission: </span>
@@ -51,7 +51,7 @@
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Diagnosis: </span>
-                            <span class="mx-1">{{ $case->diagnosis ?? 'N/A'}} </span>
+                            <span class="mx-1">{{ $case->diagnosis ?? 'N/A' }} </span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)"> Bill Range: </span>
@@ -93,7 +93,8 @@
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Medicine Detail: </span>
                             @if ($case->medicine_detail)
-                                <a href="{{ asset('storage/' . $case->medicine_detail) }}" target="_blank" class="text-primary">
+                                <a href="{{ asset('storage/' . $case->medicine_detail) }}" target="_blank"
+                                    class="text-primary">
                                     <i class="bi bi-file-earmark-text"></i> View
                                 </a>
                             @else
@@ -112,8 +113,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="cancelRemarkModalLabel">Cancellation Remark</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         @csrf
                         <input type="hidden" name="id" value="{{ $case->id }}">
@@ -152,11 +152,13 @@
                             </div>
                             <div class="form-group col-sm-12 col-lg-6">
                                 <label for="bill_attachment_1">Bill Attachment</label>
-                                <input type="file" class="form-control" name="bill_attachment_1" id="bill_attachment_1">
+                                <input type="file" class="form-control" name="bill_attachment_1"
+                                    id="bill_attachment_1">
                             </div>
                             <div class="form-group col-sm-12 col-lg-6">
                                 <label for="discharge_summary_attachment">Discharge Summary</label>
-                                <input type="file" class="form-control" name="discharge_summary_attachment" id="discharge_summary_attachment">
+                                <input type="file" class="form-control" name="discharge_summary_attachment"
+                                    id="discharge_summary_attachment">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -192,7 +194,7 @@
                         if (response.success) {
                             $('#editCaseModal').modal('hide');
                             alert(response.message);
-                            window.location.href = `{{route('bill.case.index')}}`;
+                            window.location.href = `{{ route('bill.case.index') }}`;
                         } else {
                             alert('Error: ' + response.message);
                         }
