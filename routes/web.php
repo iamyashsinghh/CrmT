@@ -55,6 +55,10 @@ Route::prefix('/admin')->middleware(['auth', 'role:Admin'])->group(function () {
     Route::get('wallets', [Controllers\Admin\WalletController::class, 'index'])->name('admin.wallets.index');
     Route::post('wallets', [Controllers\Admin\WalletController::class, 'store'])->name('admin.wallets.store');
     Route::get('wallets/ajax', [Controllers\Admin\WalletController::class, 'ajax'])->name('admin.wallets.ajax');
+
+    Route::get('vendor/wallets', [Controllers\Admin\WalletController::class, 'index_vendor'])->name('admin.vendor.wallets.index');
+    Route::get('vendor/wallets/ajax', [Controllers\Admin\WalletController::class, 'ajax_vendor'])->name('admin.vendor.wallets.ajax');
+    Route::post('vendor/wallets', [Controllers\Admin\WalletController::class, 'vendor_update_status'])->name('admin.vendor.wallets.updateStatus');
 });
 
 
@@ -151,4 +155,6 @@ Route::prefix('/vendor')->middleware(['auth', 'role:Vendor'])->group(function ()
 
     Route::get('wallets', [Controllers\Vendor\WalletController::class, 'index'])->name('vendor.wallets.index');
     Route::get('wallets/ajax', [Controllers\Vendor\WalletController::class, 'ajax'])->name('vendor.wallets.ajax');
+    Route::post('wallets/store', [Controllers\Vendor\WalletController::class, 'store'])->name('vendor.wallets.store');
+
 });

@@ -49,6 +49,12 @@ $route_name = Route::currentRouteName();
                         <p>TPA Wallet</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('admin.vendor.wallets.index')}}" class="nav-link {{$uri == "wallets" ? 'active' : ''}}">
+                        <i class="nav-icon fas fa-wallet"></i>
+                        <p>Vendor Wallet</p>
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>

@@ -12,7 +12,8 @@
             <div class="container-fluid">
                 <div class="d-flex justify-content-between mb-2">
                     <h1 class="m-0">{{ $page_heading }}</h1>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createWalletModal">Create New</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createWalletModal">Create
+                        New</button>
                 </div>
             </div>
         </section>
@@ -24,10 +25,13 @@
                         <thead class="sticky_head bg-light">
                             <tr>
                                 <th>ID</th>
+                                <th>User</th>
+                                <th>Paid By</th>
                                 <th>Amount</th>
                                 <th>Payment Type</th>
                                 <th>Payment Proof</th>
                                 <th>Message</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,6 +40,42 @@
                 </div>
             </div>
         </section>
+
+        <div class="modal fade" id="createWalletModal" tabindex="-1" aria-labelledby="createWalletModalLabel">
+            <div class="modal-dialog modal-lg">
+                <form id="walletForm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createWalletModalLabel">Create Wallet Entry</h5>
+                            <a class="btn btn-close txt-black" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                        <div class="modal-body row">
+                            <div class="form-group col-md-6">
+                                <label for="amount">Amount</label>
+                                <input type="number" name="amount" class="form-control" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="payment_type">Payment Type</label>
+                                <input type="text" name="payment_type" class="form-control" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="payment_proof">Payment Proof</label>
+                                <input type="file" name="payment_proof" class="form-control" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="msg">Message</label>
+                                <textarea name="msg" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -50,14 +90,52 @@
                     url: `{{ route('vendor.wallets.ajax') }}`,
                     dataSrc: 'data'
                 },
-                columns: [
-                    { data: 'id', name: 'id' },
-                    { data: 'ammount', name: 'amount' },
-                    { data: 'payment_type', name: 'payment_type' },
-                    { data: 'payment_proof', name: 'payment_proof', render: function(data) {
-                        return `<a href="/storage/${data}" target="_blank">View Proof</a>`;
-                    }},
-                    { data: 'msg', name: 'msg' },
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'user.f_name',
+                        name: 'user.f_name'
+                    },
+                    {
+                        data: 'paid_by_name',
+                        name: 'paid_by_name'
+                    },
+                    {
+                        data: 'ammount',
+                        name: 'amount'
+                    },
+                    {
+                        data: 'payment_type',
+                        name: 'payment_type'
+                    },
+                    {
+                        data: 'payment_proof',
+                        name: 'payment_proof',
+                        render: function(data) {
+                            return `<a href="/storage/${data}" target="_blank">View Proof</a>`;
+                        }
+                    },
+                    {
+                        data: 'msg',
+                        name: 'msg'
+                    },
+                    {
+                        data: 'is_approved',
+                        name: 'is_approved',
+                        render: function(data, type, row) {
+                            if (data === 0) {
+                                return '<button class="btn btn-warning btn-sm">Pending</button>';
+                            } else if (data === 1) {
+                                return '<button class="btn btn-success btn-sm">Approved</button>';
+                            } else if (data === 2) {
+                                return '<button class="btn btn-danger btn-sm">Rejected</button>';
+                            } else {
+                                return '<button class="btn btn-secondary btn-sm">Unknown</button>';
+                            }
+                        }
+                    }
                 ],
                 order: [
                     [0, 'desc']
@@ -67,6 +145,29 @@
                 searching: true,
                 lengthChange: true,
                 autoWidth: false
+            });
+
+            $('#walletForm').submit(function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: `{{ route('vendor.wallets.store') }}`,
+                    method: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#createWalletModal').modal('hide');
+                            table.ajax.reload();
+                            alert(response.message);
+                        }
+                    }
+                });
             });
         });
     </script>

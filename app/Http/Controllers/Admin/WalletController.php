@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\VendorsWallet;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ class WalletController extends Controller
 
     public function index()
     {
-        $page_heading = 'Wallets';
+        $page_heading = 'Tpa Wallets';
         $users = User::where('role_id', 8)->get();
         // return $users;
         return view('admin.wallets.index', compact('page_heading', 'users'));
@@ -73,5 +74,46 @@ class WalletController extends Controller
         $user->save();
 
         return response()->json(['success' => true, 'message' => 'Wallet entry created successfully!']);
+    }
+
+    public function index_vendor()
+    {
+        $page_heading = 'Vendor Wallets';
+        return view('admin.wallets.vendor.index', compact('page_heading'));
+    }
+
+    public function ajax_vendor()
+    {
+        $wallets = VendorsWallet::with(['user:id,f_name,l_name'])->get();
+
+        return datatables()->of($wallets)
+            ->addColumn('paid_by_name', function ($wallet) {
+                $paidByUser = User::find($wallet->paid_by);
+                return $paidByUser ? $paidByUser->f_name : 'N/A';
+            })
+            ->addColumn('actions', function ($wallet) {
+                return '<button class="btn btn-sm btn-danger delete-wallet" data-id="' . $wallet->id . '">Delete</button>';
+            })
+            ->make(true);
+    }
+
+    public function vendor_update_status(Request $request)
+    {
+        $wallet = VendorsWallet::find($request->id);
+        $user = User::where('id', $wallet->user_id)->first();
+
+        if ($wallet->is_approved == 1 && $request->status != 1) {
+            $user->wallet -= $wallet->ammount;
+        } elseif ($wallet->is_approved != 1 && $request->status == 1) {
+            $user->wallet += $wallet->ammount;
+        }
+
+        if ($wallet && $user->save()) {
+            $wallet->is_approved = $request->status;
+            $wallet->save();
+            return response()->json(['success' => true, 'message' => 'Status updated successfully!']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Wallet not found']);
     }
 }
