@@ -66,44 +66,68 @@ class CaseController extends Controller
         $case->status = $request->status;
         $case->approved_amt = $request->approved_amt;
 
+        $get_the_tpa_commission_type = $case->tpa_type;
+        $tpa1 = $case->tpa_allot_after_claim_no_received;
+        $tpa2 = $case->tpa_allot_after_claim_no_received_two;
+        $no_commission_tpa = $case->no_commission_tpa ?? [];
+
+        if ($request->status == 'Investigation') {
+            if ($get_the_tpa_commission_type === 'direct') {
+                if (!in_array($tpa1, $no_commission_tpa)) {
+                    $no_commission_tpa[] = $tpa1;
+                }
+            } elseif ($get_the_tpa_commission_type === 'first') {
+                if (!in_array($tpa1, $no_commission_tpa)) {
+                    $no_commission_tpa[] = $tpa1;
+                }
+                if (!in_array($tpa2, $no_commission_tpa)) {
+                    $no_commission_tpa[] = $tpa2;
+                }
+            }
+        }
+        $case->no_commission_tpa = $no_commission_tpa;
+
         if ($request->status == 'Paid') {
             $approvedAmt = $request->approved_amt;
 
-            // for vendor
             $mainVendorUser = User::where('id', $case->created_by)->first();
             if ($mainVendorUser) {
                 $commissionMain = ($mainVendorUser->commission_main / 100) * $approvedAmt;
                 $case->commission_vendor = $commissionMain;
-                $mainVendorUser->wallet += $commissionMain;
+                $mainVendorUser->wallet -= $commissionMain;
                 $mainVendorUser->save();
             }
-
-            // For tpa
-            $get_the_tpa_commission_type = $case->tpa_type;
+            
             if ($get_the_tpa_commission_type === 'direct') {
                 $mainTpaUser = User::where('id', $case->tpa_allot_after_claim_no_received)->first();
-                if ($mainTpaUser) {
+                if ($mainTpaUser  && !in_array($tpa1, $no_commission_tpa)) {
                     $commissionMain = ($mainTpaUser->commission_main / 100) * $approvedAmt;
                     $case->commission_main_tpa = $commissionMain;
                     $mainTpaUser->wallet += $commissionMain;
                     $mainTpaUser->save();
+                } else {
+                    $case->commission_main_tpa = 0;
                 }
             } elseif ($get_the_tpa_commission_type === 'first') {
-                $firstTpaUser = User::where('id', $case->tpa_allot_after_claim_no_received)->first();
-                $secondTpaUser = User::where('id', $case->tpa_allot_after_claim_no_received_two)->first();
+                $firstTpaUser = User::where('id', $tpa1)->first();
+                $secondTpaUser = User::where('id', $tpa2)->first();
 
-                if ($firstTpaUser && $secondTpaUser) {
+                if ($firstTpaUser && !in_array($tpa1, $no_commission_tpa)) {
                     $commissionFirst = ($firstTpaUser->commission_first / 100) * $approvedAmt;
-                    $commissionSecond = ($secondTpaUser->commission_second / 100) * $approvedAmt;
-
                     $case->commission_first_tpa = $commissionFirst;
-                    $case->commission_second_tpa = $commissionSecond;
-
                     $firstTpaUser->wallet += $commissionFirst;
-                    $secondTpaUser->wallet += $commissionSecond;
-
                     $firstTpaUser->save();
+                } else {
+                    $case->commission_first_tpa = 0;
+                }
+
+                if ($secondTpaUser && !in_array($tpa2, $no_commission_tpa)) {
+                    $commissionSecond = ($secondTpaUser->commission_second / 100) * $approvedAmt;
+                    $case->commission_second_tpa = $commissionSecond;
+                    $secondTpaUser->wallet += $commissionSecond;
                     $secondTpaUser->save();
+                } else {
+                    $case->commission_second_tpa = 0;
                 }
             }
         }
@@ -116,7 +140,7 @@ class CaseController extends Controller
             'message' => 'Case updated successfully!',
         ]);
     }
-    
+
     public function update_files(Request $request, $id)
     {
         $request->validate([

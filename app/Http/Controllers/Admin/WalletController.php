@@ -15,7 +15,7 @@ class WalletController extends Controller
     public function index()
     {
         $page_heading = 'Wallets';
-        $users = User::whereIn('role_id', [8, 10])->get();
+        $users = User::where('role_id', 8)->get();
         // return $users;
         return view('admin.wallets.index', compact('page_heading', 'users'));
     }
@@ -46,7 +46,6 @@ class WalletController extends Controller
 
         $auth_user = Auth::guard('Admin')->user();
 
-        // Fetch the user as a model instance, not a collection
         $user = User::where('id', $request->user_id)->first();
 
         if (!$user) {
@@ -62,7 +61,7 @@ class WalletController extends Controller
         $wallet = new Wallet();
         $wallet->user_id = $request->user_id;
         $wallet->paid_by = $auth_user->id;
-        $wallet->ammount = $request->amount; // Corrected spelling from 'ammount'
+        $wallet->ammount = $request->amount;
         $wallet->payment_type = $request->payment_type;
         $wallet->msg = $request->msg;
 
@@ -70,9 +69,8 @@ class WalletController extends Controller
             $wallet->payment_proof = $request->file('payment_proof')->store('payment_proofs', 'public');
         }
 
-
         $wallet->save();
-        $user->save(); // Save the user to reflect the wallet deduction
+        $user->save();
 
         return response()->json(['success' => true, 'message' => 'Wallet entry created successfully!']);
     }

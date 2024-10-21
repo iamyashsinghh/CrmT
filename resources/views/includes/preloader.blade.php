@@ -1,4 +1,4 @@
 <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="" src="{{asset('dsk.webp')}}" alt="AdminLTELogo" style="width: 20%; height: 10%;">
+    <img class="animation__shake" src="{{asset('images/logo.png')}}" alt="AdminLTELogo" style="width: 20%; height: 15%;">
     {{-- class="animation__shake" --}}
 </div>

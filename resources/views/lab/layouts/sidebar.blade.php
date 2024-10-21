@@ -6,7 +6,8 @@ $uri = end($uri_arr);
 @endphp
 <aside class="main-sidebar sidebar-dark-danger" style="background: var(--wb-dark-red);">
     <a href="{{route('lab.dashboard')}}" class="brand-link text-center">
-        <img src="{{asset('wb-logo2.webp')}}" alt="AdminLTE Logo" style="width: 80% !important;">
+                <img src="{{asset('images/logo.png')}}" alt="AdminLTE Logo" style="width: 80% !important; filter: drop-shadow(1px 1px 5px #ffffff50);">
+
     </a>
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">

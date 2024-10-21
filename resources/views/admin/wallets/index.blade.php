@@ -39,7 +39,6 @@
             </div>
         </section>
 
-        <!-- Create Wallet Modal -->
         <div class="modal fade" id="createWalletModal" tabindex="-1" aria-labelledby="createWalletModalLabel">
             <div class="modal-dialog modal-lg">
                 <form id="walletForm">
