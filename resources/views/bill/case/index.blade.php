@@ -89,11 +89,17 @@
                     },
                     {
                         data: 'doa',
+                        render: function(data, type, row) {
+                            return moment(data.doa).format("DD-MMM-YYYY");
+                        },
                         searchable: true,
                         sortable: true
                     },
                     {
                         data: 'dod',
+                        render: function(data, type, row) {
+                            return moment(data.dod).format("DD-MMM-YYYY");
+                        },
                         searchable: true,
                         sortable: true
                     },

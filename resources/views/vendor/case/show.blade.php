@@ -52,11 +52,11 @@
                             </div>
                             <div class="col-sm-6">
                                 <span class="text-bold mx-1" style="color: var(--wb-wood)">Date of Admission: </span>
-                                <span class="mx-1"> {{ $case->doa }} at {{ $case->doa_time }}</span>
+                                <span class="mx-1"> {{ date('d-M-Y', strtotime($case->doa)) }} at {{ $case->doa_time }}</span>
                             </div>
                             <div class="col-sm-6">
                                 <span class="text-bold mx-1" style="color: var(--wb-wood)">Date of Discharge: </span>
-                                <span class="mx-1"> {{ $case->dod }} at {{ $case->dod_time }}</span>
+                                <span class="mx-1"> {{ date('d-M-Y', strtotime($case->dod)) }} at {{ $case->dod_time }}</span>
                             </div>
                             <div class="col-sm-6">
                                 <span class="text-bold mx-1" style="color: var(--wb-wood)">Member Id: </span>

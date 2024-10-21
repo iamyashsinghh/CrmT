@@ -39,11 +39,11 @@
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Date of Admission: </span>
-                            <span class="mx-1"> {{ $case->doa }} at {{ $case->doa_time }}</span>
+                            <span class="mx-1"> {{ date('d-M-Y', strtotime($case->doa)) }} at {{ $case->doa_time }}</span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Date of Discharge: </span>
-                            <span class="mx-1"> {{ $case->dod }} at {{ $case->dod_time }}</span>
+                            <span class="mx-1"> {{ date('d-M-Y', strtotime($case->dod)) }} at {{ $case->dod_time }}</span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Hospital: </span>
@@ -79,6 +79,8 @@
             <div class="card mb-3">
                 <div class="card-header text-light" style="background-color: var(--wb-renosand);">
                     <h3 class="card-title">Case Information Files</h3>
+                    <button href="javascript:void(0);" class="btn p-0 text-light float-right" title="Edit Case files."
+                    data-bs-toggle="modal" data-bs-target="#editCaseFileModal"><i class="fa fa-edit"></i></button>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -292,6 +294,89 @@
                 </form>
             </div>
         </div>
+        <div class="modal fade" id="editCaseFileModal" tabindex="-1" aria-labelledby="editCaseFileModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <form id="editCaseFileForm" enctype="multipart/form-data">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editCaseFileModalLabel">Edit Case Files</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body row">
+                            <input type="hidden" name="case_id" value="{{ $case->id }}">
+                            <div class="form-group col-lg-6 col-sm-12">
+                                <label for="aadhar_attachment">Aadhar Attachment</label>
+                                <input type="file" class="form-control" name="aadhar_attachment"
+                                    id="aadhar_attachment">
+                                <small class="text-muted">Leave blank if you don't want to change</small>
+                            </div>
+                            <div class="form-group col-lg-6 col-sm-12">
+                                <label for="aadhar_attachment_2">Aadhar Attachment 2</label>
+                                <input type="file" class="form-control" name="aadhar_attachment_2"
+                                    id="aadhar_attachment_2">
+                                <small class="text-muted">Leave blank if you don't want to change</small>
+                            </div>
+                            <div class="form-group col-lg-6 col-sm-12">
+                                <label for="pan_card">PAN Card</label>
+                                <input type="file" class="form-control" name="pan_card" id="pan_card">
+                                <small class="text-muted">Leave blank if you don't want to change</small>
+                            </div>
+                            <div class="form-group col-lg-6 col-sm-12">
+                                <label for="cancelled_cheque">Cancelled Cheque</label>
+                                <input type="file" class="form-control" name="cancelled_cheque"
+                                    id="cancelled_cheque">
+                                <small class="text-muted">Leave blank if you don't want to change</small>
+                            </div>
+                            <div class="form-group col-lg-6 col-sm-12">
+                                <label for="policy">Policy</label>
+                                <input type="file" class="form-control" name="policy" id="policy">
+                                <small class="text-muted">Leave blank if you don't want to change</small>
+                            </div>
+
+                            <div class="form-group col-lg-6 col-sm-12">
+                                <label for="icp_attachment">ICP Attachment</label>
+                                <input type="file" class="form-control" name="icp_attachment"
+                                    id="icp_attachment">
+                                <small class="text-muted">Leave blank if you don't want to change</small>
+                            </div>
+                            <div class="form-group col-lg-6 col-sm-12">
+                                <label for="patient_details_form">Patient Details Form</label>
+                                <input type="file" class="form-control" name="patient_details_form"
+                                    id="patient_details_form">
+                                <small class="text-muted">Leave blank if you don't want to change</small>
+                            </div>
+                            <div class="form-group col-lg-6 col-sm-12">
+                                <label for="medicine_vitals_attached">Medicine Vitals</label>
+                                <input type="file" class="form-control" name="medicine_vitals_attached" id="medicine_vitals_attached">
+                                <small class="text-muted">Leave blank if you don't want to change</small>
+                            </div>
+                            <div class="form-group col-lg-6 col-sm-12">
+                                <label for="medicine_detail">Medicine Detail</label>
+                                <input type="file" class="form-control" name="medicine_detail"
+                                    id="medicine_detail">
+                                <small class="text-muted">Leave blank if you don't want to change</small>
+                            </div>
+                            <div class="form-group col-lg-6 col-sm-12">
+                                <label for="bill_attachment_1">Bill Attachment</label>
+                                <input type="file" class="form-control" name="bill_attachment_1" id="bill_attachment_1">
+                                <small class="text-muted">Leave blank if you don't want to change</small>
+                            </div>
+                            <div class="form-group col-lg-6 col-sm-12">
+                                <label for="discharge_summary_attachment">Discharge Summary</label>
+                                <input type="file" class="form-control" name="discharge_summary_attachment" id="discharge_summary_attachment">
+                                <small class="text-muted">Leave blank if you don't want to change</small>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="modal fade" id="addQueryModal" tabindex="-1" aria-labelledby="addQueryModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -336,6 +421,37 @@
 
                 $.ajax({
                     url: `{{ route('postsales.case.update', $case->id) }}`,
+                    method: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#editCaseModal').modal('hide');
+                            alert(response.message);
+                            location.reload();
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('AJAX Error: ', textStatus, errorThrown);
+                        alert('An error occurred: ' + textStatus);
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function() {
+            $('#editCaseFileForm').submit(function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: `{{ route('postsales.case.files.update', $case->id) }}`,
                     method: 'POST',
                     data: formData,
                     headers: {

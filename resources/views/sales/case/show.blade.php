@@ -79,11 +79,11 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Date of Admission: </span>
-                            <span class="mx-1"> {{ $case->doa }} at {{ $case->doa_time }}</span>
+                            <span class="mx-1"> {{ date('d-M-Y', strtotime($case->doa)) }} at {{ $case->doa_time }}</span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Date of Discharge: </span>
-                            <span class="mx-1"> {{ $case->dod }} at {{ $case->dod_time }}</span>
+                            <span class="mx-1"> {{ date('d-M-Y', strtotime($case->dod)) }} at {{ $case->dod_time }}</span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Hospital: </span>
@@ -141,7 +141,7 @@
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="doa">Date of Admission</label>
                                 <input type="date" class="form-control" name="doa" id="doa"
-                                    value="{{ $case->doa }}" required>
+                                    value="{{ date('d-M-Y', strtotime($case->doa)) }}" required>
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="doa_time">Time of Admission</label>
@@ -151,7 +151,7 @@
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="dod">Date of Discharge</label>
                                 <input type="date" class="form-control" name="dod" id="dod"
-                                    value="{{ $case->dod }}" required>
+                                    value="{{ date('d-M-Y', strtotime($case->dod)) }}" required>
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="dod_time">Time of Discharge</label>

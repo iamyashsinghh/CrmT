@@ -55,8 +55,8 @@ class CaseController extends Controller
     {
         $request->validate([
             'ipd_no_entry' => 'required',
-            'bill_attachment_1' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'discharge_summary_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'bill_attachment_1' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'discharge_summary_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
         ]);
 
         $case = Cases::findOrFail($id);

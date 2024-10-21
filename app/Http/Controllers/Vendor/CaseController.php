@@ -31,11 +31,11 @@ class CaseController extends Controller
             'dod_time' => 'nullable|date_format:H:i',
             'corp' => 'nullable|string|max:255',
             'relation' => 'nullable|string|max:255',
-            'aadhar_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'aadhar_attachment_2' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'pan_card' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'cancelled_cheque' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'policy' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'aadhar_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'aadhar_attachment_2' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'pan_card' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'cancelled_cheque' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'policy' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
         ]);
 
         $validated['created_by'] = $auth_user->id;
@@ -144,11 +144,11 @@ class CaseController extends Controller
             'tpa' => 'required',
             'dod' => 'required|date',
             'dod_time' => 'required',
-            'aadhar_attachment' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'aadhar_attachment_2' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'pan_card' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'cancelled_cheque' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'policy' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'aadhar_attachment' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'aadhar_attachment_2' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'pan_card' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'cancelled_cheque' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'policy' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
         ]);
 
         $case = Cases::findOrFail($id);

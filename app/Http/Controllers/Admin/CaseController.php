@@ -31,10 +31,10 @@ class CaseController extends Controller
             'dod_time' => 'nullable|date_format:H:i',
             'corp' => 'nullable|string|max:255',
             'relation' => 'nullable|string|max:255',
-            'aadhar_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'pan_card' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'cancelled_cheque' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'policy' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'aadhar_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'pan_card' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'cancelled_cheque' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'policy' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
         ]);
 
         $validated['created_by'] = $auth_user->id;
@@ -198,11 +198,11 @@ class CaseController extends Controller
             'claim_no' => 'nullable',
             'tpa_type' => 'nullable',
             'tpa_allot_after_claim_no_received_two' => 'nullable',
-            'aadhar_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'aadhar_attachment_2' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'pan_card' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'cancelled_cheque' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'policy' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'aadhar_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'aadhar_attachment_2' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'pan_card' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'cancelled_cheque' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+            'policy' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
         ]);
 
         $case = Cases::findOrFail($id);
@@ -249,6 +249,64 @@ class CaseController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Case updated successfully!',
+        ]);
+    }
+
+    public function update_files(Request $request, $id)
+    {
+        $request->validate([
+            'patient_details_form' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:15360',
+            'icp_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:15360',
+            'medicine_vitals_attached' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:15360',
+            'medicine_detail' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:15360',
+            'aadhar_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:15360',
+            'aadhar_attachment_2' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:15360',
+            'pan_card' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:15360',
+            'cancelled_cheque' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:15360',
+            'policy' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:15360',
+            'bill_attachment_1' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:15360',
+            'discharge_summary_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:15360',
+        ]);
+        $case = Cases::findOrFail($id);
+
+        if ($request->hasFile('patient_details_form')) {
+            $case->patient_details_form = $request->file('patient_details_form')->store('attachments', 'public');
+        }
+        if ($request->hasFile('icp_attachment')) {
+            $case->icp_attachment = $request->file('icp_attachment')->store('attachments', 'public');
+        }
+        if ($request->hasFile('medicine_vitals_attached')) {
+            $case->medicine_vitals_attached = $request->file('medicine_vitals_attached')->store('attachments', 'public');
+        }
+        if ($request->hasFile('medicine_detail')) {
+            $case->medicine_detail = $request->file('medicine_detail')->store('attachments', 'public');
+        }
+        if ($request->hasFile('aadhar_attachment')) {
+            $case->aadhar_attachment = $request->file('aadhar_attachment')->store('attachments', 'public');
+        }
+        if ($request->hasFile('aadhar_attachment_2')) {
+            $case->aadhar_attachment_2 = $request->file('aadhar_attachment_2')->store('attachments', 'public');
+        }
+        if ($request->hasFile('pan_card')) {
+            $case->pan_card = $request->file('pan_card')->store('attachments', 'public');
+        }
+        if ($request->hasFile('cancelled_cheque')) {
+            $case->cancelled_cheque = $request->file('cancelled_cheque')->store('attachments', 'public');
+        }
+        if ($request->hasFile('policy')) {
+            $case->policy = $request->file('policy')->store('attachments', 'public');
+        }
+        if ($request->hasFile('bill_attachment_1')) {
+            $case->bill_attachment_1 = $request->file('bill_attachment_1')->store('attachments', 'public');
+        }
+        if ($request->hasFile('discharge_summary_attachment')) {
+            $case->discharge_summary_attachment = $request->file('discharge_summary_attachment')->store('attachments', 'public');
+        }
+
+        $case->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Case files updated successfully!',
         ]);
     }
 }

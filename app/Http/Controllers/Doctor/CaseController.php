@@ -57,7 +57,7 @@ class CaseController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'icp_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:5120',
+            'icp_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:5120',
         ]);
 
         $case = Cases::findOrFail($id);

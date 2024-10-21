@@ -2,6 +2,7 @@
     <strong>Copyright &copy; {{date('Y')}} <a href="javascript:void(0);">Company Name</a>.</strong>
     All rights reserved.
 </footer>
+<script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
 <script>
 function handle_view_image(image_url, image_change_request_url = null) {
     const existingModal = document.getElementById('viewImageModal');
