@@ -55,8 +55,8 @@ class CaseController extends Controller
     {
         $request->validate([
             'ipd_no_entry' => 'required',
-            'bill_attachment_1' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
-            'discharge_summary_attachment' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'bill_attachment_1' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
+            'discharge_summary_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,xlsx,docx,doc|max:2048',
         ]);
 
         $case = Cases::findOrFail($id);
@@ -72,26 +72,22 @@ class CaseController extends Controller
         if($case->save()){
             $lab_maker = User::where('role_id', 6)->get();
 
-            // Find the next available  member with is_next = true
             $next_member_assign = $lab_maker->where('is_next', true)->first();
 
-            // If no member is marked as next, restart and assign the first one
             if (!$next_member_assign) {
-                $next_member_assign = $lab_maker->first(); // Get the first member
+                $next_member_assign = $lab_maker->first();
             }
 
             $case->assign_member_id = $next_member_assign->id;
             $case->save();
 
-            // Reset is_next for all members
             User::where('role_id', 6)->update(['is_next' => false]);
 
-            // Set is_next to true for the next  member in the list
-            $next_member_index = $lab_maker->search($next_member_assign); // Get the index of the current member
-            $next_member_index = ($next_member_index + 1) % $lab_maker->count(); // Move to the next member or reset to the first one
-            $next_user = $lab_maker->get($next_member_index); // Get the next  member
+            $next_member_index = $lab_maker->search($next_member_assign);
+            $next_member_index = ($next_member_index + 1) % $lab_maker->count();
+            $next_user = $lab_maker->get($next_member_index);
             $next_user->is_next = true;
-            $next_user->save(); // Save the is_next flag
+            $next_user->save();
         }
 
         return response()->json([
