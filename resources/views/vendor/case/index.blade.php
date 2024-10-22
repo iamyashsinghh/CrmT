@@ -184,7 +184,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ route('vendor_case_ajax') }}`,
+                    url: `{{ route('vendor_case_ajax') }}?{!! $filter !!}`,
                     dataSrc: 'data'
                 },
                 columns: [{

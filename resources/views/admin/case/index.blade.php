@@ -58,7 +58,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ route('admin_case_ajax') }}`,
+                    url: `{{ route('admin_case_ajax') }}?{!! $filter !!}`,
                     dataSrc: 'data'
                 },
                 columns: [{

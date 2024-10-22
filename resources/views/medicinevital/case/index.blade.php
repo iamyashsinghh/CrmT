@@ -58,7 +58,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ route('medicinevital_case_ajax') }}`,
+                    url: `{{ route('medicinevital_case_ajax') }}?{!! $filter !!}`,
                     dataSrc: 'data'
                 },
                 columns: [{
