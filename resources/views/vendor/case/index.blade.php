@@ -83,15 +83,15 @@
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="relation">Relation</label>
                                 <select class="form-control" name="relation" id="relation" required>
-                                    <option value="self" >Self</option>
-                                    <option value="mother" >Mother</option>
-                                    <option value="father" >Father</option>
-                                    <option value="daughter" >Daughter</option>
+                                    <option value="self">Self</option>
+                                    <option value="mother">Mother</option>
+                                    <option value="father">Father</option>
+                                    <option value="daughter">Daughter</option>
                                     <option value="son">Son</option>
-                                    <option value="husband" >Husband</option>
+                                    <option value="husband">Husband</option>
                                     <option value="wife">Wife</option>
-                                    <option value="brother" >Brother</option>
-                                    <option value="sister" >Sister</option>
+                                    <option value="brother">Brother</option>
+                                    <option value="sister">Sister</option>
                                 </select>
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">
@@ -100,8 +100,8 @@
                                     <option>Choose</option>
                                     <option value="Mediassist">Mediassist</option>
                                     <option value="Paramount">Paramount</option>
-                                    <option value="Raksha" >Raksha</option>
-                                    <option value="Hdfc" >Hdfc</option>
+                                    <option value="Raksha">Raksha</option>
+                                    <option value="Hdfc">Hdfc</option>
                                     <option value="Digit">Digit</option>
                                     <option value="Good health">Good health</option>
                                     <option value="Icici">Icici</option>
@@ -109,12 +109,12 @@
                                     <option value="Vidal">Vidal</option>
                                     <option value="Hitpa">Hitpa</option>
                                     <option value="Health india">Health india</option>
-                                    <option value="Ericson" >Ericson</option>
+                                    <option value="Ericson">Ericson</option>
                                     <option value="Universal sampoo">Universal sampoo</option>
                                     <option value="Nivs bupa">Nivs bupa</option>
-                                    <option value="Navi" >Navi</option>
+                                    <option value="Navi">Navi</option>
                                     <option value="Chola ms">Chola ms</option>
-                                    <option value="Care" >Care</option>
+                                    <option value="Care">Care</option>
                                     <option value="Aditya birla">Aditya birla</option>
                                     <option value="East west">East west</option>
                                     <option value="Md india">Md india</option>
@@ -138,11 +138,13 @@
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="aadhar_attachment">Aadhar Attachment</label>
-                                <input type="file" class="form-control" name="aadhar_attachment" id="aadhar_attachment">
+                                <input type="file" class="form-control" name="aadhar_attachment"
+                                    id="aadhar_attachment">
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="aadhar_attachment_2">Aadhar Attachment 2</label>
-                                <input type="file" class="form-control" name="aadhar_attachment_2" id="aadhar_attachment_2">
+                                <input type="file" class="form-control" name="aadhar_attachment_2"
+                                    id="aadhar_attachment_2">
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="pan_card">PAN Card</label>
@@ -150,7 +152,8 @@
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="cancelled_cheque">Cancelled Cheque</label>
-                                <input type="file" class="form-control" name="cancelled_cheque" id="cancelled_cheque">
+                                <input type="file" class="form-control" name="cancelled_cheque"
+                                    id="cancelled_cheque">
                             </div>
                             <div class="form-group col-lg-6 col-sm-12">
                                 <label for="policy">Policy</label>
@@ -169,6 +172,12 @@
 
 @section('footer-script')
     <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    @php
+        $filter = '';
+        if (isset($filter_params['dashboard_filters'])) {
+            $filter = 'dashboard_filters=' . $filter_params['dashboard_filters'];
+        }
+    @endphp
     <script>
         $(document).ready(function() {
             const table = $('#casesTable').DataTable({
@@ -248,9 +257,9 @@
                 autoWidth: false
             });
             $(document).on('click', '.btn-view-case', function() {
-    var caseId = $(this).data('id'); // Get case ID from data attribute
-    window.location.href = '/vendor/cases/' + caseId; // Redirect to case show page
-});
+                var caseId = $(this).data('id'); // Get case ID from data attribute
+                window.location.href = '/vendor/cases/' + caseId; // Redirect to case show page
+            });
 
 
             $('#createCaseForm').submit(function(e) {

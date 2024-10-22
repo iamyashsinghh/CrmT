@@ -11,9 +11,14 @@ use Illuminate\Support\Facades\Auth;
 
 class CaseController extends Controller
 {
-    public function index()
+    public function index($dashboard_filters = null)
     {
         $page_heading = 'Cases';
+        $filter_params = "";
+        if ($dashboard_filters !== null) {
+            $filter_params = ['dashboard_filters' => $dashboard_filters];
+            $page_heading = ucwords(str_replace("_", " ", $dashboard_filters));
+        }
         return view('postsales.case.index', compact('page_heading'));
     }
 
@@ -97,7 +102,7 @@ class CaseController extends Controller
                 $mainVendorUser->wallet -= $commissionMain;
                 $mainVendorUser->save();
             }
-            
+
             if ($get_the_tpa_commission_type === 'direct') {
                 $mainTpaUser = User::where('id', $case->tpa_allot_after_claim_no_received)->first();
                 if ($mainTpaUser  && !in_array($tpa1, $no_commission_tpa)) {

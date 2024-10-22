@@ -10,9 +10,14 @@ use Illuminate\Support\Facades\Auth;
 
 class CaseController extends Controller
 {
-    public function index()
+    public function index($dashboard_filters = null)
     {
         $page_heading = 'Cases';
+        $filter_params = "";
+        if ($dashboard_filters !== null) {
+            $filter_params = ['dashboard_filters' => $dashboard_filters];
+            $page_heading = ucwords(str_replace("_", " ", $dashboard_filters));
+        }
         return view('vendor.case.index', compact('page_heading'));
     }
 
@@ -97,6 +102,7 @@ class CaseController extends Controller
     public function show($id)
     {
         $case = Cases::findOrFail($id);
+        $assign_member = User::where('id', $case->assign_member_id)->first();
 
         $query_status = '';
         if ($case->forward_status == 0 && $case->forward_status_remark == null) {
@@ -124,7 +130,7 @@ class CaseController extends Controller
             $query_status = "Hold -- Reason: $case->forward_status_remark";
         }
 
-        return view('vendor.case.show', compact('case', 'query_status'));
+        return view('vendor.case.show', compact('case', 'query_status', 'assign_member'));
     }
 
 

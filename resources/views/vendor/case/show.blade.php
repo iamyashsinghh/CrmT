@@ -13,13 +13,25 @@
             <div class="container-fluid">
                 <div class="card-header mb-3">
                     <div class="d-inline-block">
-                            <button class="btn btn-primary btn-xs p-2 m-1"
-                                onclick="handle_view_message(`{{ $query_status ?: 'N/A' }}`)">Case Status</button>
+                        <button class="btn btn-primary btn-xs p-2 m-1"
+                            onclick="handle_view_message(`{{ $query_status ?: 'N/A' }}`)">Case Status</button>
                     </div>
                 </div>
             </div>
         </section>
-
+        @if ($assign_member->role_id == 9 && $case->is_post_1 == 0)
+            {{-- should we make the post --}}
+        @elseif ($assign_member->role_id == 9 && $case->is_post_1 == 1 && $case->is_post_2)
+            @if (
+                $case->opd_attachment &&
+                    $case->bill_attachment_post &&
+                    $case->check_box_post &&
+                    $case->post_courier_no &&
+                    $case->post_courier_date &&
+                    $case->post_dispatch_pdf_attachment)
+                    {{-- should be create the post 2 --}}
+            @endif
+        @endif
         <section class="content">
             <div class="container-fluid">
                 <div class="card mb-3">
@@ -52,11 +64,13 @@
                             </div>
                             <div class="col-sm-6">
                                 <span class="text-bold mx-1" style="color: var(--wb-wood)">Date of Admission: </span>
-                                <span class="mx-1"> {{ date('d-M-Y', strtotime($case->doa)) }} at {{ $case->doa_time }}</span>
+                                <span class="mx-1"> {{ date('d-M-Y', strtotime($case->doa)) }} at
+                                    {{ $case->doa_time }}</span>
                             </div>
                             <div class="col-sm-6">
                                 <span class="text-bold mx-1" style="color: var(--wb-wood)">Date of Discharge: </span>
-                                <span class="mx-1"> {{ date('d-M-Y', strtotime($case->dod)) }} at {{ $case->dod_time }}</span>
+                                <span class="mx-1"> {{ date('d-M-Y', strtotime($case->dod)) }} at
+                                    {{ $case->dod_time }}</span>
                             </div>
                             <div class="col-sm-6">
                                 <span class="text-bold mx-1" style="color: var(--wb-wood)">Member Id: </span>
@@ -117,7 +131,8 @@
                             <div class="col-sm-6">
                                 <span class="text-bold mx-1" style="color: var(--wb-wood)">Policy: </span>
                                 @if ($case->policy)
-                                    <a href="{{ asset('storage/' . $case->policy) }}" target="_blank" class="text-primary">
+                                    <a href="{{ asset('storage/' . $case->policy) }}" target="_blank"
+                                        class="text-primary">
                                         <i class="bi bi-file-earmark-text"></i> View
                                     </a>
                                 @else

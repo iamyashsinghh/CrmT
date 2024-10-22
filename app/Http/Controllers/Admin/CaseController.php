@@ -10,10 +10,15 @@ use Illuminate\Support\Facades\Auth;
 
 class CaseController extends Controller
 {
-    public function index()
+    public function index($dashboard_filters = null)
     {
         $page_heading = 'Cases';
-        return view('admin.case.index', compact('page_heading'));
+        $filter_params = "";
+        if ($dashboard_filters !== null) {
+            $filter_params = ['dashboard_filters' => $dashboard_filters];
+            $page_heading = ucwords(str_replace("_", " ", $dashboard_filters));
+        }
+        return view('admin.case.index', compact('page_heading', 'filter_params'));
     }
 
     public function store(Request $request)

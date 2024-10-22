@@ -45,6 +45,12 @@
 @endsection
 
 @section('footer-script')
+    @php
+    $filter = '';
+    if (isset($filter_params['dashboard_filters'])) {
+    $filter = 'dashboard_filters=' . $filter_params['dashboard_filters'];
+    }
+    @endphp
     <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {

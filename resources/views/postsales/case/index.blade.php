@@ -46,6 +46,12 @@
 
 @section('footer-script')
     <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    @php
+        $filter = '';
+        if (isset($filter_params['dashboard_filters'])) {
+            $filter = 'dashboard_filters=' . $filter_params['dashboard_filters'];
+        }
+    @endphp
     <script>
         $(document).ready(function() {
             const table = $('#casesTable').DataTable({
