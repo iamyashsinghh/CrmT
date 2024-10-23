@@ -105,6 +105,30 @@
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Date of Discharge: </span>
                             <span class="mx-1">{{ date('d-M-Y', strtotime($case->dod)) }} at {{ $case->dod_time }}</span>
                         </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">IPD No: </span>
+                            <span class="mx-1">{{ $case->ipd_no_entry }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Courier No: </span>
+                            <span class="mx-1">{{ $case->pre_courier_no ?? 'N/A'}} </span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Courier Date: </span>
+                            <span class="mx-1">{{ $case->pre_courier_date }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Claim No: </span>
+                            <span class="mx-1 badge">{{ $case->claim_no }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Approved Ammount: </span>
+                            <span class="mx-1 badge">{{ $case->approved_amt }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Status: </span>
+                            <span class="mx-1 badge">{{ $case->status }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -153,8 +177,6 @@
             <div class="card mb-3">
                 <div class="card-header text-light" style="background-color: var(--wb-renosand);">
                     <h3 class="card-title">Case Information Files</h3>
-                    <button href="javascript:void(0);" class="btn p-0 text-light float-right" title="Edit Case files."
-                    data-bs-toggle="modal" data-bs-target="#editCaseFileModal"><i class="fa fa-edit"></i></button>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -264,16 +286,6 @@
                                 <span class="text-muted">Not Available</span>
                             @endif
                         </div>
-                        <div class="col-sm-6">
-                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Patient Details Form: </span>
-                            @if ($case->patient_details_form)
-                                <a href="{{ asset('storage/' . $case->patient_details_form) }}" target="_blank" class="text-primary">
-                                    <i class="bi bi-file-earmark-text"></i> View
-                                </a>
-                            @else
-                                <span class="text-muted">Not Available</span>
-                            @endif
-                        </div>
                     </div>
                 </div>
             </div>
@@ -330,6 +342,142 @@
                 </div>
             </div>
 
+
+            @if ($case->is_post_1 == 1)
+                <div class="card mb-3">
+                    <div class="card-header text-light" style="background-color: var(--wb-renosand);">
+                        <h3 class="card-title">Post 1 Information</h3>
+                        <button href="javascript:void(0);" class="btn p-0 text-light float-right"
+                            title="Edit Post Case info." data-bs-toggle="modal" data-bs-target="#editCasePostModal"><i
+                                class="fa fa-edit"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">OPD Attachemnt: </span>
+                                @if ($case->opd_attachment)
+                                    <a href="{{ asset('storage/' . $case->opd_attachment) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Bill Attachemnt: </span>
+                                @if ($case->bill_attachment_post)
+                                    <a href="{{ asset('storage/' . $case->bill_attachment_post) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Courier No: </span>
+                                <span class="mx-1">{{ $case->post_courier_no ?? 'N/A'}} </span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Courier Date: </span>
+                                <span class="mx-1">{{ $case->post_courier_date }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Claim No: </span>
+                                <span class="mx-1 badge">{{ $case->post_claim_no }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Approved Ammount: </span>
+                                <span class="mx-1 badge">{{ $case->post_ammount }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Status: </span>
+                                <span class="mx-1 badge">{{ $case->post_status }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Patient Dtetails: </span>
+                                @if ($case->post_patient_details_form)
+                                    <a href="{{ asset('storage/' . $case->post_patient_details_form) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if ($case->is_post_2 == 1)
+                <div class="card mb-3">
+                    <div class="card-header text-light" style="background-color: var(--wb-renosand);">
+                        <h3 class="card-title">Post 2 Information</h3>
+                        <button href="javascript:void(0);" class="btn p-0 text-light float-right"
+                            title="Edit Post Case info." data-bs-toggle="modal" data-bs-target="#editCasePostTwoModal"><i
+                                class="fa fa-edit"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">OPD Attachemnt: </span>
+                                @if ($case->opd_attachment_2)
+                                    <a href="{{ asset('storage/' . $case->opd_attachment_2) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Bill Attachemnt: </span>
+                                @if ($case->bill_attachment_post_two)
+                                    <a href="{{ asset('storage/' . $case->bill_attachment_post_two) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Courier No: </span>
+                                <span class="mx-1">{{ $case->post_two_courier_no ?? 'N/A'}} </span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Courier Date: </span>
+                                <span class="mx-1">{{ $case->post_two_courier_date }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Claim No: </span>
+                                <span class="mx-1 badge">{{ $case->post_two_claim_no }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Approved Ammount: </span>
+                                <span class="mx-1 badge">{{ $case->post_two_ammount }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Status: </span>
+                                <span class="mx-1 badge">{{ $case->post_two_status }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Patient Dtetails: </span>
+                                @if ($case->post_two_patient_details_form)
+                                    <a href="{{ asset('storage/' . $case->post_two_patient_details_form) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
         </section>
 
