@@ -19,7 +19,7 @@ class CaseController extends Controller
             $filter_params = ['dashboard_filters' => $dashboard_filters];
             $page_heading = ucwords(str_replace("_", " ", $dashboard_filters));
         }
-        return view('postsales.case.index', compact('page_heading'));
+        return view('postsales.case.index', compact('page_heading', 'filter_params'));
     }
 
     public function ajax_list(Request $request)
@@ -43,6 +43,55 @@ class CaseController extends Controller
                 $query->where('assign_member_id', $auth_user->id)
                       ->orWhere('assign_member_post_sales', $auth_user->id);
             });
+
+            if ($request->dashboard_filters != null) {
+
+                if ($request->dashboard_filters == "main_claim_cases") {
+                    $cases->where('is_post_1', 0);
+                }elseif ($request->dashboard_filters == "main_claim_cases_query") {
+                    $cases->where('is_post_1', 0)->where(['status' => 'Query']);
+                }elseif ($request->dashboard_filters == "main_claim_cases_investigation") {
+                    $cases->where('is_post_1', 0)->where(['status' => 'Investigation']);
+                }elseif ($request->dashboard_filters == "main_claim_cases_reject") {
+                    $cases->where('is_post_1', 0)->where(['status' => 'Reject']);
+                }elseif ($request->dashboard_filters == "main_claim_cases_underprocess") {
+                    $cases->where('is_post_1', 0)->where(['status' => 'UnderProcess']);
+                }elseif ($request->dashboard_filters == "main_claim_cases_approved") {
+                    $cases->where('is_post_1', 0)->where(['status' => 'Approved']);
+                }elseif ($request->dashboard_filters == "main_claim_cases_paid") {
+                    $cases->where('is_post_1', 0)->where(['status' => 'Paid']);
+
+                }elseif ($request->dashboard_filters == "post_claim_cases") {
+                    $cases->where('is_post_1', 1);
+                }elseif ($request->dashboard_filters == "post_claim_cases_query") {
+                    $cases->where('is_post_1', 1)->where(['post_status' => 'Query']);
+                }elseif ($request->dashboard_filters == "post_claim_cases_investigation") {
+                    $cases->where('is_post_1', 1)->where(['post_status' => 'Investigation']);
+                }elseif ($request->dashboard_filters == "post_claim_cases_reject") {
+                    $cases->where('is_post_1', 1)->where(['post_status' => 'Reject']);
+                }elseif ($request->dashboard_filters == "post_claim_cases_underprocess") {
+                    $cases->where('is_post_1', 1)->where(['post_status' => 'UnderProcess']);
+                }elseif ($request->dashboard_filters == "post_claim_cases_approved") {
+                    $cases->where('is_post_1', 1)->where(['post_status' => 'Approved']);
+                }elseif ($request->dashboard_filters == "post_claim_cases_paid") {
+                    $cases->where('is_post_1', 1)->where(['post_status' => 'Paid']);
+
+                }elseif ($request->dashboard_filters == "post_two_claim_cases") {
+                    $cases->where('is_post_2', 1);
+                }elseif ($request->dashboard_filters == "post_two_claim_cases_query") {
+                    $cases->where('is_post_2', 1)->where(['post_two_status' => 'Query']);
+                }elseif ($request->dashboard_filters == "post_two_claim_cases_investigation") {
+                    $cases->where('is_post_2', 1)->where(['post_two_status' => 'Investigation']);
+                }elseif ($request->dashboard_filters == "post_two_claim_cases_reject") {
+                    $cases->where('is_post_2', 1)->where(['post_two_status' => 'Reject']);
+                }elseif ($request->dashboard_filters == "post_two_claim_cases_underprocess") {
+                    $cases->where('is_post_2', 1)->where(['post_two_status' => 'UnderProcess']);
+                }elseif ($request->dashboard_filters == "post_two_claim_cases_approved") {
+                    $cases->where('is_post_2', 1)->where(['post_two_status' => 'Approved']);
+                }elseif ($request->dashboard_filters == "post_two_claim_cases_paid") {
+                    $cases->where('is_post_2', 1)->where(['post_two_status' => 'Paid']);
+                }
+            }
 
         return dataTables()->of($cases)
             ->addColumn('created_by', function ($case) {

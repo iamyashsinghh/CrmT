@@ -132,7 +132,7 @@
             });
             $(document).on('click', '.btn-view-case', function() {
                 var caseId = $(this).data('id'); // Get case ID from data attribute
-                window.location.href = '/lab/cases/' + caseId; // Redirect to case show page
+                window.location.href = '/lab/cases/view/' + caseId; // Redirect to case show page
             });
         });
     </script>

@@ -42,9 +42,9 @@ Route::prefix('/admin')->middleware(['auth', 'role:Admin'])->group(function () {
 
     // cases
     Route::get('/cases/ajaxlist', [Controllers\Admin\CaseController::class, 'ajax_list'])->name('admin_case_ajax');
-    Route::get('/cases', [Controllers\Admin\CaseController::class, 'index'])->name('admin.case.index');
+    Route::get('/cases/{dashboard_filters?}', [Controllers\Admin\CaseController::class, 'index'])->name('admin.case.index');
     Route::post('/cases/store', [Controllers\Admin\CaseController::class, 'store'])->name('admin.case.store');
-    Route::get('/cases/{id}', [Controllers\Admin\CaseController::class, 'show'])->name('admin.case.show');
+    Route::get('/cases/view/{id}', [Controllers\Admin\CaseController::class, 'show'])->name('admin.case.show');
     Route::post('/cases/{id}/update', [Controllers\Admin\CaseController::class, 'update'])->name('admin.case.update');
     Route::get('/cases-status-update/{cases_id}/{status?}', [Controllers\Admin\CaseController::class, 'cases_status_update'])->name('admin.caseStatus.update');
     Route::post('/cases-status-remark', [Controllers\Admin\CaseController::class, 'cases_status_remark'])->name('admin_cases_status_remark');
@@ -69,7 +69,7 @@ Route::prefix('/sales')->middleware(['auth', 'role:Sales'])->group(function () {
     // cases
     Route::get('/cases/ajaxlist', [Controllers\Sales\CaseController::class, 'ajax_list'])->name('sales_case_ajax');
     Route::get('/cases', [Controllers\Sales\CaseController::class, 'index'])->name('sales.case.index');
-    Route::get('/cases/{id}', [Controllers\Sales\CaseController::class, 'show'])->name('sales.case.show');
+    Route::get('/cases/view/{id}', [Controllers\Sales\CaseController::class, 'show'])->name('sales.case.show');
     Route::post('/cases/{id}/update', [Controllers\Sales\CaseController::class, 'update'])->name('sales.case.update');
 });
 
@@ -79,7 +79,7 @@ Route::prefix('/doctor')->middleware(['auth', 'role:Doctor'])->group(function ()
 
     Route::get('/cases/ajaxlist', [Controllers\Doctor\CaseController::class, 'ajax_list'])->name('doctor_case_ajax');
     Route::get('/cases', [Controllers\Doctor\CaseController::class, 'index'])->name('doctor.case.index');
-    Route::get('/cases/{id}', [Controllers\Doctor\CaseController::class, 'show'])->name('doctor.case.show');
+    Route::get('/cases/view/{id}', [Controllers\Doctor\CaseController::class, 'show'])->name('doctor.case.show');
     Route::post('/cases/{id}/update', [Controllers\Doctor\CaseController::class, 'update'])->name('doctor.case.update');
     Route::post('/cases/{id}/update_post_one', [Controllers\Doctor\CaseController::class, 'update_post_one'])->name('doctor.case.update.post_one');
     Route::post('/cases/{id}/update_post_two', [Controllers\Doctor\CaseController::class, 'update_post_two'])->name('doctor.case.update.post_two');
@@ -90,7 +90,7 @@ Route::prefix('/medicine')->middleware(['auth', 'role:MedicineVital'])->group(fu
     Route::get('/dashboard', [Controllers\MedicineVital\MedicineController::class, 'dashboard'])->name('medicinevital.dashboard');
     Route::get('/cases/ajaxlist', [Controllers\MedicineVital\CaseController::class, 'ajax_list'])->name('medicinevital_case_ajax');
     Route::get('/cases', [Controllers\MedicineVital\CaseController::class, 'index'])->name('medicinevital.case.index');
-    Route::get('/cases/{id}', [Controllers\MedicineVital\CaseController::class, 'show'])->name('medicinevital.case.show');
+    Route::get('/cases/view/{id}', [Controllers\MedicineVital\CaseController::class, 'show'])->name('medicinevital.case.show');
     Route::post('/cases/{id}/update', [Controllers\MedicineVital\CaseController::class, 'update'])->name('medicinevital.case.update');
 });
 
@@ -99,12 +99,11 @@ Route::prefix('/billing')->middleware(['auth', 'role:Bill'])->group(function () 
     Route::get('/dashboard', [Controllers\Bill\BillingController::class, 'dashboard'])->name('billing.dashboard');
     Route::get('/cases/ajaxlist', [Controllers\Bill\CaseController::class, 'ajax_list'])->name('bill_case_ajax');
     Route::get('/cases', [Controllers\Bill\CaseController::class, 'index'])->name('bill.case.index');
-    Route::get('/cases/{id}', [Controllers\Bill\CaseController::class, 'show'])->name('bill.case.show');
+    Route::get('/cases/view/{id}', [Controllers\Bill\CaseController::class, 'show'])->name('bill.case.show');
     Route::post('/cases/{id}/update', [Controllers\Bill\CaseController::class, 'update'])->name('bill.case.update');
 
     Route::post('/cases/{id}/update_post_one', [Controllers\Bill\CaseController::class, 'update_post_one'])->name('bill.case.update.post_one');
     Route::post('/cases/{id}/update_post_two', [Controllers\Bill\CaseController::class, 'update_post_two'])->name('bill.case.update.post_two');
-
 });
 
 // Routes for Lab Role
@@ -112,12 +111,11 @@ Route::prefix('/lab')->middleware(['auth', 'role:Lab'])->group(function () {
     Route::get('/dashboard', [Controllers\Lab\LabController::class, 'dashboard'])->name('lab.dashboard');
     Route::get('/cases/ajaxlist', [Controllers\Lab\CaseController::class, 'ajax_list'])->name('lab_case_ajax');
     Route::get('/cases', [Controllers\Lab\CaseController::class, 'index'])->name('lab.case.index');
-    Route::get('/cases/{id}', [Controllers\Lab\CaseController::class, 'show'])->name('lab.case.show');
+    Route::get('/cases/view/{id}', [Controllers\Lab\CaseController::class, 'show'])->name('lab.case.show');
     Route::get('/cases/{id}/update', [Controllers\Lab\CaseController::class, 'update'])->name('lab.case.update');
 
     Route::get('/cases/{id}/update_post_one', [Controllers\Lab\CaseController::class, 'update_post_one'])->name('lab.case.update.post_one');
     Route::get('/cases/{id}/update_post_two', [Controllers\Lab\CaseController::class, 'update_post_two'])->name('lab.case.update.post_two');
-
 });
 
 // Routes for Dispatcher Role
@@ -125,7 +123,7 @@ Route::prefix('/dispatcher')->middleware(['auth', 'role:Dispatcher'])->group(fun
     Route::get('/dashboard', [Controllers\Dispatcher\DispatcherController::class, 'dashboard'])->name('dispatcher.dashboard');
     Route::get('/cases/ajaxlist', [Controllers\Dispatcher\CaseController::class, 'ajax_list'])->name('dispatcher_case_ajax');
     Route::get('/cases', [Controllers\Dispatcher\CaseController::class, 'index'])->name('dispatcher.case.index');
-    Route::get('/cases/{id}', [Controllers\Dispatcher\CaseController::class, 'show'])->name('dispatcher.case.show');
+    Route::get('/cases/view/{id}', [Controllers\Dispatcher\CaseController::class, 'show'])->name('dispatcher.case.show');
     Route::post('/cases/{id}/update', [Controllers\Dispatcher\CaseController::class, 'update'])->name('dispatcher.case.update');
 
     Route::post('/cases/{id}/update_post_one', [Controllers\Dispatcher\CaseController::class, 'update_post_one'])->name('dispatcher.case.update.post_one');
@@ -136,8 +134,8 @@ Route::prefix('/dispatcher')->middleware(['auth', 'role:Dispatcher'])->group(fun
 Route::prefix('/postsales')->middleware(['auth', 'role:PostSales'])->group(function () {
     Route::get('/dashboard', [Controllers\PostSales\PostSalesController::class, 'dashboard'])->name('postsales.dashboard');
     Route::get('/cases/ajaxlist', [Controllers\PostSales\CaseController::class, 'ajax_list'])->name('postsales_case_ajax');
-    Route::get('/cases', [Controllers\PostSales\CaseController::class, 'index'])->name('postsales.case.index');
-    Route::get('/cases/{id}', [Controllers\PostSales\CaseController::class, 'show'])->name('postsales.case.show');
+    Route::get('/cases/{dashboard_filters?}', [Controllers\PostSales\CaseController::class, 'index'])->name('postsales.case.index');
+    Route::get('/cases/view/{id}', [Controllers\PostSales\CaseController::class, 'show'])->name('postsales.case.show');
     Route::post('/cases/{id}/update', [Controllers\PostSales\CaseController::class, 'update'])->name('postsales.case.update');
 
     Route::post('/cases/{id}/update_post_one', [Controllers\PostSales\CaseController::class, 'update_post_one'])->name('postsales.case.update.post_one');
@@ -153,7 +151,7 @@ Route::prefix('/tpa')->middleware(['auth', 'role:TPA'])->group(function () {
     Route::get('/dashboard', [Controllers\TPA\TpaController::class, 'dashboard'])->name('tpa.dashboard');
     Route::get('/cases/ajaxlist', [Controllers\TPA\CaseController::class, 'ajax_list'])->name('tpa_case_ajax');
     Route::get('/cases', [Controllers\TPA\CaseController::class, 'index'])->name('tpa.case.index');
-    Route::get('/cases/{id}', [Controllers\TPA\CaseController::class, 'show'])->name('tpa.case.show');
+    Route::get('/cases/view/{id}', [Controllers\TPA\CaseController::class, 'show'])->name('tpa.case.show');
 
     Route::get('wallets', [Controllers\TPA\WalletController::class, 'index'])->name('tpa.wallets.index');
     Route::get('wallets/ajax', [Controllers\TPA\WalletController::class, 'ajax'])->name('tpa.wallets.ajax');
@@ -164,9 +162,9 @@ Route::prefix('/vendor')->middleware(['auth', 'role:Vendor'])->group(function ()
     Route::get('/dashboard', [Controllers\Vendor\VendorController::class, 'dashboard'])->name('vendor.dashboard');
 
     Route::get('/cases/ajaxlist', [Controllers\Vendor\CaseController::class, 'ajax_list'])->name('vendor_case_ajax');
-    Route::get('/cases', [Controllers\Vendor\CaseController::class, 'index'])->name('vendor.case.index');
+    Route::get('/cases/{dashboard_filters?}', [Controllers\Vendor\CaseController::class, 'index'])->name('vendor.case.index');
     Route::post('/cases/store', [Controllers\Vendor\CaseController::class, 'store'])->name('vendor.case.store');
-    Route::get('/cases/{id}', [Controllers\Vendor\CaseController::class, 'show'])->name('vendor.case.show');
+    Route::get('/cases/view/{id}', [Controllers\Vendor\CaseController::class, 'show'])->name('vendor.case.show');
     Route::post('/vendor/cases/{id}/update', [Controllers\Vendor\CaseController::class, 'update'])->name('vendor.case.update');
     Route::post('/cases/{case}/upload', [Controllers\Vendor\CaseController::class, 'upload'])->name('vendor.case.upload');
 
@@ -176,7 +174,6 @@ Route::prefix('/vendor')->middleware(['auth', 'role:Vendor'])->group(function ()
 
     Route::post('/verify-password', [Controllers\Vendor\PasswordController::class, 'verifyPassword'])->name('verify.vendor.wallets.index');
     Route::get('/check-password-session', [Controllers\Vendor\PasswordController::class, 'checkPasswordSession'])->name('check.vendor.password.session');
-Route::get('should_create_post_1/{case_id?}/{status?}', [Controllers\Vendor\CaseController::class, 'should_create_post_1'])->name('vendor.should_create_post_1');
-Route::get('should_create_post_2/{case_id?}/{status?}', [Controllers\Vendor\CaseController::class, 'should_create_post_2'])->name('vendor.should_create_post_2');
-
+    Route::get('should_create_post_1/{case_id?}/{status?}', [Controllers\Vendor\CaseController::class, 'should_create_post_1'])->name('vendor.should_create_post_1');
+    Route::get('should_create_post_2/{case_id?}/{status?}', [Controllers\Vendor\CaseController::class, 'should_create_post_2'])->name('vendor.should_create_post_2');
 });

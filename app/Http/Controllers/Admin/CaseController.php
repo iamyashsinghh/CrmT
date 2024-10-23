@@ -70,7 +70,6 @@ class CaseController extends Controller
     {
         $auth_user = Auth::guard('Admin')->user();
 
-        // Fetch the necessary fields, including 'created_by'
         $cases = Cases::select([
             'cases.id',
             'cases.case_code',
@@ -82,13 +81,61 @@ class CaseController extends Controller
             'cases.gender',
             'cases.doa',
             'cases.dod',
-            'cases.created_by', // Ensure this is included
+            'cases.created_by',
         ])
-        ->with(['user:id,f_name']); // Use the 'user' relationship for the creator
+        ->with(['user:id,f_name']);
+
+        if ($request->dashboard_filters != null) {
+
+            if ($request->dashboard_filters == "main_claim_cases") {
+                $cases->where('is_post_1', 0)->where(['forward_status' => 0, 'forward_status_remark' => null]);
+            }elseif ($request->dashboard_filters == "main_claim_cases_query") {
+                $cases->where('is_post_1', 0)->where(['status' => 'Query']);
+            }elseif ($request->dashboard_filters == "main_claim_cases_investigation") {
+                $cases->where('is_post_1', 0)->where(['status' => 'Investigation']);
+            }elseif ($request->dashboard_filters == "main_claim_cases_reject") {
+                $cases->where('is_post_1', 0)->where(['status' => 'Reject']);
+            }elseif ($request->dashboard_filters == "main_claim_cases_underprocess") {
+                $cases->where('is_post_1', 0)->where(['status' => 'UnderProcess']);
+            }elseif ($request->dashboard_filters == "main_claim_cases_approved") {
+                $cases->where('is_post_1', 0)->where(['status' => 'Approved']);
+            }elseif ($request->dashboard_filters == "main_claim_cases_paid") {
+                $cases->where('is_post_1', 0)->where(['status' => 'Paid']);
+
+            }elseif ($request->dashboard_filters == "post_claim_cases") {
+                $cases->where('is_post_1', 1);
+            }elseif ($request->dashboard_filters == "post_claim_cases_query") {
+                $cases->where('is_post_1', 1)->where(['post_status' => 'Query']);
+            }elseif ($request->dashboard_filters == "post_claim_cases_investigation") {
+                $cases->where('is_post_1', 1)->where(['post_status' => 'Investigation']);
+            }elseif ($request->dashboard_filters == "post_claim_cases_reject") {
+                $cases->where('is_post_1', 1)->where(['post_status' => 'Reject']);
+            }elseif ($request->dashboard_filters == "post_claim_cases_underprocess") {
+                $cases->where('is_post_1', 1)->where(['post_status' => 'UnderProcess']);
+            }elseif ($request->dashboard_filters == "post_claim_cases_approved") {
+                $cases->where('is_post_1', 1)->where(['post_status' => 'Approved']);
+            }elseif ($request->dashboard_filters == "post_claim_cases_paid") {
+                $cases->where('is_post_1', 1)->where(['post_status' => 'Paid']);
+
+            }elseif ($request->dashboard_filters == "post_two_claim_cases") {
+                $cases->where('is_post_2', 1);
+            }elseif ($request->dashboard_filters == "post_two_claim_cases_query") {
+                $cases->where('is_post_2', 1)->where(['post_two_status' => 'Query']);
+            }elseif ($request->dashboard_filters == "post_two_claim_cases_investigation") {
+                $cases->where('is_post_2', 1)->where(['post_two_status' => 'Investigation']);
+            }elseif ($request->dashboard_filters == "post_two_claim_cases_reject") {
+                $cases->where('is_post_2', 1)->where(['post_two_status' => 'Reject']);
+            }elseif ($request->dashboard_filters == "post_two_claim_cases_underprocess") {
+                $cases->where('is_post_2', 1)->where(['post_two_status' => 'UnderProcess']);
+            }elseif ($request->dashboard_filters == "post_two_claim_cases_approved") {
+                $cases->where('is_post_2', 1)->where(['post_two_status' => 'Approved']);
+            }elseif ($request->dashboard_filters == "post_two_claim_cases_paid") {
+                $cases->where('is_post_2', 1)->where(['post_two_status' => 'Paid']);
+            }
+        }
 
         return dataTables()->of($cases)
             ->addColumn('created_by', function ($case) {
-                // Access the 'user' relation to get the creator's name
                 return $case->user ? $case->user->f_name : 'N/A';
             })
             ->addColumn('actions', function ($case) {

@@ -137,7 +137,7 @@
             });
             $(document).on('click', '.btn-view-case', function() {
                 var caseId = $(this).data('id'); // Get case ID from data attribute
-                window.location.href = '/postsales/cases/' + caseId; // Redirect to case show page
+                window.location.href = '/postsales/cases/view/' + caseId; // Redirect to case show page
             });
         });
     </script>

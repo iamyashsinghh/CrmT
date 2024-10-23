@@ -55,7 +55,7 @@
             @endif
             @if ($case->is_post_1 == 1)
                 @if (
-                    $case->post_status !== null)
+                    $case->  !== null)
                     <div class="container-fluid">
                         <div class="card ">
                             <div class="card-header text-light" style="background-color: var(--wb-renosand);">

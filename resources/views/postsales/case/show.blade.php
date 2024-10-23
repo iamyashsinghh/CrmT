@@ -418,7 +418,7 @@
                                     <option value="Investigation" {{ $case->status == 'Investigation' ? 'selected' : '' }}>Investigation
                                     </option>
                                     <option value="Reject" {{ $case->status == 'Reject' ? 'selected' : '' }}>Reject</option>
-                                    <option value="UnderProocess" {{ $case->status == 'UnderProocess' ? 'selected' : '' }}>UnderProocess</option>
+                                    <option value="UnderProcess" {{ $case->status == 'UnderProcess' ? 'selected' : '' }}>UnderProcess</option>
                                     <option value="Approved" {{ $case->status == 'Approved' ? 'selected' : '' }}>Approved</option>
                                     <option value="Paid" {{ $case->status == 'Paid' ? 'selected' : '' }}>Paid</option>
                                 </select>
@@ -465,7 +465,7 @@
                                 <option value="Investigation" {{ $case->post_status == 'Investigation' ? 'selected' : '' }}>Investigation
                                 </option>
                                 <option value="Reject" {{ $case->post_status == 'Reject' ? 'selected' : '' }}>Reject</option>
-                                <option value="UnderProocess" {{ $case->post_status == 'UnderProocess' ? 'selected' : '' }}>UnderProocess</option>
+                                <option value="UnderProcess" {{ $case->post_status == 'UnderProcess' ? 'selected' : '' }}>UnderProcess</option>
                                 <option value="Approved" {{ $case->post_status == 'Approved' ? 'selected' : '' }}>Approved</option>
                                 <option value="Paid" {{ $case->post_status == 'Paid' ? 'selected' : '' }}>Paid</option>
                             </select>
@@ -512,7 +512,7 @@
                                 <option value="Investigation" {{ $case->post_two_status == 'Investigation' ? 'selected' : '' }}>Investigation
                                 </option>
                                 <option value="Reject" {{ $case->post_two_status == 'Reject' ? 'selected' : '' }}>Reject</option>
-                                <option value="UnderProocess" {{ $case->post_two_status == 'UnderProocess' ? 'selected' : '' }}>UnderProocess</option>
+                                <option value="UnderProcess" {{ $case->post_two_status == 'UnderProcess' ? 'selected' : '' }}>UnderProcess</option>
                                 <option value="Approved" {{ $case->post_two_status == 'Approved' ? 'selected' : '' }}>Approved</option>
                                 <option value="Paid" {{ $case->post_two_status == 'Paid' ? 'selected' : '' }}>Paid</option>
                             </select>
