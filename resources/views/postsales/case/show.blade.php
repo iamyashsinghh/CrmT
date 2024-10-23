@@ -58,6 +58,22 @@
                             <span class="mx-1">{{ $case->ipd_no_entry }}</span>
                         </div>
                         <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Courier No: </span>
+                            <span class="mx-1">{{ $case->pre_courier_no ?? 'N/A'}} </span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Courier Date: </span>
+                            <span class="mx-1">{{ $case->pre_courier_date }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Claim No: </span>
+                            <span class="mx-1 badge">{{ $case->claim_no }}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-bold mx-1" style="color: var(--wb-wood)">Approved Ammount: </span>
+                            <span class="mx-1 badge">{{ $case->approved_amt }}</span>
+                        </div>
+                        <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Status: </span>
                             <span class="mx-1 badge">{{ $case->status }}</span>
                         </div>
@@ -245,6 +261,142 @@
                     </div>
                 </div>
             </div>
+
+            @if ($case->is_post_1 == 1)
+                <div class="card mb-3">
+                    <div class="card-header text-light" style="background-color: var(--wb-renosand);">
+                        <h3 class="card-title">Post 1 Information</h3>
+                        <button href="javascript:void(0);" class="btn p-0 text-light float-right"
+                            title="Edit Post Case info." data-bs-toggle="modal" data-bs-target="#editCasePostModal"><i
+                                class="fa fa-edit"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">OPD Attachemnt: </span>
+                                @if ($case->opd_attachment)
+                                    <a href="{{ asset('storage/' . $case->opd_attachment) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Bill Attachemnt: </span>
+                                @if ($case->bill_attachment_post)
+                                    <a href="{{ asset('storage/' . $case->bill_attachment_post) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Courier No: </span>
+                                <span class="mx-1">{{ $case->post_courier_no ?? 'N/A'}} </span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Courier Date: </span>
+                                <span class="mx-1">{{ $case->post_courier_date }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Claim No: </span>
+                                <span class="mx-1 badge">{{ $case->post_claim_no }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Approved Ammount: </span>
+                                <span class="mx-1 badge">{{ $case->post_ammount }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Status: </span>
+                                <span class="mx-1 badge">{{ $case->post_status }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Patient Dtetails: </span>
+                                @if ($case->post_patient_details_form)
+                                    <a href="{{ asset('storage/' . $case->post_patient_details_form) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if ($case->is_post_2 == 1)
+                <div class="card mb-3">
+                    <div class="card-header text-light" style="background-color: var(--wb-renosand);">
+                        <h3 class="card-title">Post 2 Information</h3>
+                        <button href="javascript:void(0);" class="btn p-0 text-light float-right"
+                            title="Edit Post Case info." data-bs-toggle="modal" data-bs-target="#editCasePostTwoModal"><i
+                                class="fa fa-edit"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">OPD Attachemnt: </span>
+                                @if ($case->opd_attachment_2)
+                                    <a href="{{ asset('storage/' . $case->opd_attachment_2) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Bill Attachemnt: </span>
+                                @if ($case->bill_attachment_post_two)
+                                    <a href="{{ asset('storage/' . $case->bill_attachment_post_two) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Courier No: </span>
+                                <span class="mx-1">{{ $case->post_two_courier_no ?? 'N/A'}} </span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Courier Date: </span>
+                                <span class="mx-1">{{ $case->post_two_courier_date }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Claim No: </span>
+                                <span class="mx-1 badge">{{ $case->post_two_claim_no }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Approved Ammount: </span>
+                                <span class="mx-1 badge">{{ $case->post_two_ammount }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Status: </span>
+                                <span class="mx-1 badge">{{ $case->post_two_status }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">Patient Dtetails: </span>
+                                @if ($case->post_two_patient_details_form)
+                                    <a href="{{ asset('storage/' . $case->post_two_patient_details_form) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </section>
 
         <div class="modal fade" id="editCaseModal" tabindex="-1" aria-labelledby="editCaseModalLabel"
@@ -294,6 +446,103 @@
                 </form>
             </div>
         </div>
+        <div class="modal fade" id="editCasePostModal" tabindex="-1" aria-labelledby="editCasePostModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <form id="editCasePostModalForm" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editCasePostModalLabel">Add Files</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body row">
+                        <input type="hidden" name="case_id" value="{{ $case->id }}">
+                        <div class="form-group col-lg-6 col-sm-12">
+                            <label for="post_status">Status</label>
+                            <select class="form-control" name="post_status" id="post_status" required>
+                                <option value="Query" {{ $case->post_status == 'Query' ? 'selected' : '' }}>Query</option>
+                                <option value="Investigation" {{ $case->post_status == 'Investigation' ? 'selected' : '' }}>Investigation
+                                </option>
+                                <option value="Reject" {{ $case->post_status == 'Reject' ? 'selected' : '' }}>Reject</option>
+                                <option value="UnderProocess" {{ $case->post_status == 'UnderProocess' ? 'selected' : '' }}>UnderProocess</option>
+                                <option value="Approved" {{ $case->post_status == 'Approved' ? 'selected' : '' }}>Approved</option>
+                                <option value="Paid" {{ $case->post_status == 'Paid' ? 'selected' : '' }}>Paid</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-6 col-sm-12">
+                            <label for="post_ammount">Approved Amount</label>
+                            <input type="text" class="form-control" name="post_ammount" id="post_ammount"
+                                value="{{ $case->post_ammount }}">
+                        </div>
+                        <div class="form-group col-lg-6 col-sm-6">
+                            <label for="post_claim_no">Claim No</label>
+                            <input type="text" class="form-control" name="post_claim_no" id="post_claim_no"
+                                value="{{ $case->post_claim_no }}">
+                        </div>
+                        <div class="form-group col-sm-12 col-lg-6">
+                            <label for="post_patient_details_form">Patient Dtetails</label>
+                            <input type="file" class="form-control" name="post_patient_details_form" id="post_patient_details_form">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade" id="editCasePostTwoModal" tabindex="-1" aria-labelledby="editCasePostTwoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <form id="editCasePostTwoModalForm" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editCasePostTwoModalLabel">Add Files</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body row">
+                        <input type="hidden" name="case_id" value="{{ $case->id }}">
+                        <div class="form-group col-lg-6 col-sm-12">
+                            <label for="post_two_status">Status</label>
+                            <select class="form-control" name="post_two_status" id="post_two_status" required>
+                                <option value="Query" {{ $case->post_two_status == 'Query' ? 'selected' : '' }}>Query</option>
+                                <option value="Investigation" {{ $case->post_two_status == 'Investigation' ? 'selected' : '' }}>Investigation
+                                </option>
+                                <option value="Reject" {{ $case->post_two_status == 'Reject' ? 'selected' : '' }}>Reject</option>
+                                <option value="UnderProocess" {{ $case->post_two_status == 'UnderProocess' ? 'selected' : '' }}>UnderProocess</option>
+                                <option value="Approved" {{ $case->post_two_status == 'Approved' ? 'selected' : '' }}>Approved</option>
+                                <option value="Paid" {{ $case->post_two_status == 'Paid' ? 'selected' : '' }}>Paid</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-6 col-sm-12">
+                            <label for="post_two_ammount">Approved Amount</label>
+                            <input type="text" class="form-control" name="post_two_ammount" id="post_two_ammount"
+                                value="{{ $case->post_two_ammount }}">
+                        </div>
+                        <div class="form-group col-lg-6 col-sm-6">
+                            <label for="post_two_claim_no">Claim No</label>
+                            <input type="text" class="form-control" name="post_two_claim_no" id="post_two_claim_no"
+                                value="{{ $case->post_two_claim_no }}">
+                        </div>
+                        <div class="form-group col-sm-12 col-lg-6">
+                            <label for="post_two_patient_details_form">Patient Dtetails</label>
+                            <input type="file" class="form-control" name="post_two_patient_details_form" id="post_two_patient_details_form">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
         <div class="modal fade" id="editCaseFileModal" tabindex="-1" aria-labelledby="editCaseFileModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -407,6 +656,8 @@
                 </form>
             </div>
         </div>
+
+
     </div>
 
 @section('footer-script')
@@ -433,6 +684,61 @@
                             $('#editCaseModal').modal('hide');
                             alert(response.message);
                             location.reload();
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('AJAX Error: ', textStatus, errorThrown);
+                        alert('An error occurred: ' + textStatus);
+                    }
+                });
+            });
+            $('#editCasePostModalForm').submit(function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: `{{ route('postsales.case.update.post_one', $case->id) }}`,
+                    method: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#editCaseModal').modal('hide');
+                            alert(response.message);
+                            window.location.href = `{{ route('postsales.case.index') }}`;
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('AJAX Error: ', textStatus, errorThrown);
+                        alert('An error occurred: ' + textStatus);
+                    }
+                });
+            });
+            $('#editCasePostTwoModalForm').submit(function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                $.ajax({
+                    url: `{{ route('postsales.case.update.post_two', $case->id) }}`,
+                    method: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#editCaseModal').modal('hide');
+                            alert(response.message);
+                            window.location.href = `{{ route('postsales.case.index') }}`;
                         } else {
                             alert('Error: ' + response.message);
                         }

@@ -104,6 +104,58 @@
                     </div>
                 </div>
             </div>
+
+            @if ($case->is_post_1 == 1)
+                <div class="card mb-3">
+                    <div class="card-header text-light" style="background-color: var(--wb-renosand);">
+                        <h3 class="card-title">Post 1 Information</h3>
+                        <button href="javascript:void(0);" class="btn p-0 text-light float-right"
+                            title="Edit Post Case info." data-bs-toggle="modal" data-bs-target="#editCasePostModal"><i
+                                class="fa fa-edit"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">OPD Attachemnt: </span>
+                                @if ($case->opd_attachment)
+                                    <a href="{{ asset('storage/' . $case->opd_attachment) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if ($case->is_post_2 == 1)
+                <div class="card mb-3">
+                    <div class="card-header text-light" style="background-color: var(--wb-renosand);">
+                        <h3 class="card-title">Post 2 Information</h3>
+                        <button href="javascript:void(0);" class="btn p-0 text-light float-right"
+                            title="Edit Post Case info." data-bs-toggle="modal" data-bs-target="#editCasePostTwoModal"><i
+                                class="fa fa-edit"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">OPD Attachemnt: </span>
+                                @if ($case->opd_attachment_2)
+                                    <a href="{{ asset('storage/' . $case->opd_attachment_2) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </section>
 
         <div class="modal fade" id="cancelRemarkModal" tabindex="-1" aria-labelledby="cancelRemarkModalLabel"
@@ -113,7 +165,8 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="cancelRemarkModalLabel">Cancellation Remark</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         @csrf
                         <input type="hidden" name="id" value="{{ $case->id }}">
@@ -169,6 +222,58 @@
                 </form>
             </div>
         </div>
+        <div class="modal fade" id="editCasePostModal" tabindex="-1" aria-labelledby="editCasePostModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <form id="editCasePostModalForm" enctype="multipart/form-data">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editCasePostModalLabel">Add Files</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body row">
+                            <input type="hidden" name="case_id" value="{{ $case->id }}">
+                            <div class="form-group col-sm-12">
+                                <label for="bill_attachment_post">Bill Attachment</label>
+                                <input type="file" class="form-control" name="bill_attachment_post"
+                                    id="bill_attachment_post">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal fade" id="editCasePostTwoModal" tabindex="-1" aria-labelledby="editCasePostTwoModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <form id="editCasePostTwoModalForm" enctype="multipart/form-data">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editCasePostTwoModalLabel">Add Files</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body row">
+                            <input type="hidden" name="case_id" value="{{ $case->id }}">
+                            <div class="form-group col-sm-12">
+                                <label for="bill_attachment_post_two">Bill Attachment</label>
+                                <input type="file" class="form-control" name="bill_attachment_post_two"
+                                    id="bill_attachment_post_two">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
 @section('footer-script')
@@ -183,6 +288,63 @@
 
                 $.ajax({
                     url: `{{ route('bill.case.update', $case->id) }}`,
+                    method: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#editCaseModal').modal('hide');
+                            alert(response.message);
+                            window.location.href = `{{ route('bill.case.index') }}`;
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('AJAX Error: ', textStatus, errorThrown);
+                        alert('An error occurred: ' + textStatus);
+                    }
+                });
+            });
+
+            $('#editCasePostModalForm').submit(function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: `{{ route('bill.case.update.post_one', $case->id) }}`,
+                    method: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#editCaseModal').modal('hide');
+                            alert(response.message);
+                            window.location.href = `{{ route('bill.case.index') }}`;
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('AJAX Error: ', textStatus, errorThrown);
+                        alert('An error occurred: ' + textStatus);
+                    }
+                });
+            });
+            $('#editCasePostTwoModalForm').submit(function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: `{{ route('bill.case.update.post_two', $case->id) }}`,
                     method: 'POST',
                     data: formData,
                     headers: {

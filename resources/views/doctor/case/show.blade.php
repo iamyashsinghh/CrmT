@@ -55,11 +55,32 @@
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Diagnosis: </span>
-                            <span class="mx-1">{{ $case->diagnosis ?? 'N/A'}} </span>
+                            <span class="mx-1">{{ $case->diagnosis ?? 'N/A' }} </span>
                         </div>
                     </div>
                 </div>
             </div>
+            @if ($case->is_post_1 == 1)
+                <div class="card mb-3">
+                    <div class="card-header text-light" style="background-color: var(--wb-renosand);">
+                        <h3 class="card-title">Post 1 Information</h3>
+                        <button href="javascript:void(0);" class="btn p-0 text-light float-right"
+                            title="Edit Post Case info." data-bs-toggle="modal" data-bs-target="#editCasePostModal"><i
+                                class="fa fa-edit"></i></button>
+                    </div>
+                </div>
+            @endif
+
+            @if ($case->is_post_2 == 1)
+                <div class="card mb-3">
+                    <div class="card-header text-light" style="background-color: var(--wb-renosand);">
+                        <h3 class="card-title">Post 2 Information</h3>
+                        <button href="javascript:void(0);" class="btn p-0 text-light float-right"
+                            title="Edit Post Case info." data-bs-toggle="modal" data-bs-target="#editCasePostTwoModal"><i
+                                class="fa fa-edit"></i></button>
+                    </div>
+                </div>
+            @endif
         </section>
 
         <div class="modal fade" id="cancelRemarkModal" tabindex="-1" aria-labelledby="cancelRemarkModalLabel"
@@ -69,8 +90,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="cancelRemarkModalLabel">Cancellation Remark</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         @csrf
                         <input type="hidden" name="id" value="{{ $case->id }}">
@@ -89,7 +109,6 @@
             </div>
         </div>
 
-
         <div class="modal fade" id="editCaseModal" tabindex="-1" aria-labelledby="editCaseModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -105,6 +124,56 @@
                             <div class="form-group col-sm-12">
                                 <label for="icp_attachment">ICP Attachment</label>
                                 <input type="file" class="form-control" name="icp_attachment" id="icp_attachment">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal fade" id="editCasePostModal" tabindex="-1" aria-labelledby="editCasePostModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <form id="editCasePostModalForm" enctype="multipart/form-data">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editCasePostModalLabel">Add Files</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body row">
+                            <input type="hidden" name="case_id" value="{{ $case->id }}">
+                            <div class="form-group col-sm-12">
+                                <label for="opd_attachment">OPD Attachment</label>
+                                <input type="file" class="form-control" name="opd_attachment" id="opd_attachment">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal fade" id="editCasePostTwoModal" tabindex="-1" aria-labelledby="editCasePostTwoModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <form id="editCasePostTwoModalForm" enctype="multipart/form-data">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editCasePostTwoModalLabel">Add Files</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body row">
+                            <input type="hidden" name="case_id" value="{{ $case->id }}">
+                            <div class="form-group col-sm-12">
+                                <label for="opd_attachment">OPD Attachment</label>
+                                <input type="file" class="form-control" name="opd_attachment" id="opd_attachment">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -140,7 +209,63 @@
                         if (response.success) {
                             $('#editCaseModal').modal('hide');
                             alert(response.message);
-                            window.location.href = `{{route('doctor.case.index')}}`;
+                            window.location.href = `{{ route('doctor.case.index') }}`;
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('AJAX Error: ', textStatus, errorThrown);
+                        alert('An error occurred: ' + textStatus);
+                    }
+                });
+            });
+            $('#editCasePostModalForm').submit(function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: `{{ route('doctor.case.update.post_one', $case->id) }}`,
+                    method: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#editCaseModal').modal('hide');
+                            alert(response.message);
+                            window.location.href = `{{ route('doctor.case.index') }}`;
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('AJAX Error: ', textStatus, errorThrown);
+                        alert('An error occurred: ' + textStatus);
+                    }
+                });
+            });
+            $('#editCasePostTwoModalForm').submit(function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: `{{ route('doctor.case.update.post_two', $case->id) }}`,
+                    method: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#editCaseModal').modal('hide');
+                            alert(response.message);
+                            window.location.href = `{{ route('doctor.case.index') }}`;
                         } else {
                             alert('Error: ' + response.message);
                         }

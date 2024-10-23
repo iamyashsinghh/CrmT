@@ -19,19 +19,79 @@
                 </div>
             </div>
         </section>
-        @if ($assign_member->role_id == 9 && $case->is_post_1 == 0)
-            {{-- should we make the post --}}
-        @elseif ($assign_member->role_id == 9 && $case->is_post_1 == 1 && $case->is_post_2)
-            @if (
-                $case->opd_attachment &&
-                    $case->bill_attachment_post &&
-                    $case->check_box_post &&
-                    $case->post_courier_no &&
-                    $case->post_courier_date &&
-                    $case->post_dispatch_pdf_attachment)
-                    {{-- should be create the post 2 --}}
+        <section class="content">
+            @if ($assign_member->role_id == 9)
+                <div class="container-fluid">
+                    <div class="card ">
+                        <div class="card-header text-light" style="background-color: var(--wb-renosand);">
+                            <h3 class="card-title my-2">Should We Make The Post</h3>
+                            <div class="float-right">
+                                @if ($case->is_post_1 == 0)
+                                    <div class="d-flex">
+                                        <a href="{{ route('vendor.should_create_post_1') }}/{{$case->id}}/1" class="btn btn-light mx-2">
+                                            Yes
+                                        </a>
+                                        <a href="{{ route('vendor.should_create_post_1') }}/{{$case->id}}/2" class="btn btn-danger">
+                                            No
+                                        </a>
+                                    </div>
+                                @elseif ($case->is_post_1 == 1)
+                                    <div class="d-flex">
+                                        <button class="btn btn-success">
+                                            Created
+                                        </button>
+                                    </div>
+                                @elseif ($case->is_post_1 == 2)
+                                    <div class="d-flex">
+                                        <button class="btn btn-danger">
+                                            Rejected
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @endif
-        @endif
+            @if ($case->is_post_1 == 1)
+                @if (
+                    $case->post_status !== null)
+                    <div class="container-fluid">
+                        <div class="card ">
+                            <div class="card-header text-light" style="background-color: var(--wb-renosand);">
+                                <h3 class="card-title my-2">Should We Make The Post 2</h3>
+                                <div class="float-right">
+                                    <div class="d-flex">
+                                        @if ($case->is_post_2 == 0)
+                                    <div class="d-flex">
+                                        <a href="{{ route('vendor.should_create_post_2') }}/{{$case->id}}/1" class="btn btn-light mx-2">
+                                            Yes
+                                        </a>
+                                        <a href="{{ route('vendor.should_create_post_2') }}/{{$case->id}}/2" class="btn btn-danger">
+                                            No
+                                        </a>
+                                    </div>
+                                @elseif ($case->is_post_2 == 1)
+                                    <div class="d-flex">
+                                        <button class="btn btn-success">
+                                            Created
+                                        </button>
+                                    </div>
+                                @elseif ($case->is_post_2 == 2)
+                                    <div class="d-flex">
+                                        <button class="btn btn-danger">
+                                            Rejected
+                                        </button>
+                                    </div>
+                                @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endif
+        </section>
         <section class="content">
             <div class="container-fluid">
                 <div class="card mb-3">

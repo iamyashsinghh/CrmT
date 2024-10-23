@@ -81,6 +81,8 @@ Route::prefix('/doctor')->middleware(['auth', 'role:Doctor'])->group(function ()
     Route::get('/cases', [Controllers\Doctor\CaseController::class, 'index'])->name('doctor.case.index');
     Route::get('/cases/{id}', [Controllers\Doctor\CaseController::class, 'show'])->name('doctor.case.show');
     Route::post('/cases/{id}/update', [Controllers\Doctor\CaseController::class, 'update'])->name('doctor.case.update');
+    Route::post('/cases/{id}/update_post_one', [Controllers\Doctor\CaseController::class, 'update_post_one'])->name('doctor.case.update.post_one');
+    Route::post('/cases/{id}/update_post_two', [Controllers\Doctor\CaseController::class, 'update_post_two'])->name('doctor.case.update.post_two');
 });
 
 // Routes for MedicineVital Role
@@ -99,6 +101,10 @@ Route::prefix('/billing')->middleware(['auth', 'role:Bill'])->group(function () 
     Route::get('/cases', [Controllers\Bill\CaseController::class, 'index'])->name('bill.case.index');
     Route::get('/cases/{id}', [Controllers\Bill\CaseController::class, 'show'])->name('bill.case.show');
     Route::post('/cases/{id}/update', [Controllers\Bill\CaseController::class, 'update'])->name('bill.case.update');
+
+    Route::post('/cases/{id}/update_post_one', [Controllers\Bill\CaseController::class, 'update_post_one'])->name('bill.case.update.post_one');
+    Route::post('/cases/{id}/update_post_two', [Controllers\Bill\CaseController::class, 'update_post_two'])->name('bill.case.update.post_two');
+
 });
 
 // Routes for Lab Role
@@ -108,6 +114,10 @@ Route::prefix('/lab')->middleware(['auth', 'role:Lab'])->group(function () {
     Route::get('/cases', [Controllers\Lab\CaseController::class, 'index'])->name('lab.case.index');
     Route::get('/cases/{id}', [Controllers\Lab\CaseController::class, 'show'])->name('lab.case.show');
     Route::get('/cases/{id}/update', [Controllers\Lab\CaseController::class, 'update'])->name('lab.case.update');
+
+    Route::get('/cases/{id}/update_post_one', [Controllers\Lab\CaseController::class, 'update_post_one'])->name('lab.case.update.post_one');
+    Route::get('/cases/{id}/update_post_two', [Controllers\Lab\CaseController::class, 'update_post_two'])->name('lab.case.update.post_two');
+
 });
 
 // Routes for Dispatcher Role
@@ -117,6 +127,9 @@ Route::prefix('/dispatcher')->middleware(['auth', 'role:Dispatcher'])->group(fun
     Route::get('/cases', [Controllers\Dispatcher\CaseController::class, 'index'])->name('dispatcher.case.index');
     Route::get('/cases/{id}', [Controllers\Dispatcher\CaseController::class, 'show'])->name('dispatcher.case.show');
     Route::post('/cases/{id}/update', [Controllers\Dispatcher\CaseController::class, 'update'])->name('dispatcher.case.update');
+
+    Route::post('/cases/{id}/update_post_one', [Controllers\Dispatcher\CaseController::class, 'update_post_one'])->name('dispatcher.case.update.post_one');
+    Route::post('/cases/{id}/update_post_two', [Controllers\Dispatcher\CaseController::class, 'update_post_two'])->name('dispatcher.case.update.post_two');
 });
 
 // Routes for PostSales Role
@@ -126,6 +139,10 @@ Route::prefix('/postsales')->middleware(['auth', 'role:PostSales'])->group(funct
     Route::get('/cases', [Controllers\PostSales\CaseController::class, 'index'])->name('postsales.case.index');
     Route::get('/cases/{id}', [Controllers\PostSales\CaseController::class, 'show'])->name('postsales.case.show');
     Route::post('/cases/{id}/update', [Controllers\PostSales\CaseController::class, 'update'])->name('postsales.case.update');
+
+    Route::post('/cases/{id}/update_post_one', [Controllers\PostSales\CaseController::class, 'update_post_one'])->name('postsales.case.update.post_one');
+    Route::post('/cases/{id}/update_post_two', [Controllers\PostSales\CaseController::class, 'update_post_two'])->name('postsales.case.update.post_two');
+
     Route::post('/cases/{id}/file_update', [Controllers\PostSales\CaseController::class, 'update_files'])->name('postsales.case.files.update');
 
     Route::post('/query/add', [Controllers\PostSales\CaseController::class, 'query_add'])->name('postsales.query.add');
@@ -159,7 +176,7 @@ Route::prefix('/vendor')->middleware(['auth', 'role:Vendor'])->group(function ()
 
     Route::post('/verify-password', [Controllers\Vendor\PasswordController::class, 'verifyPassword'])->name('verify.vendor.wallets.index');
     Route::get('/check-password-session', [Controllers\Vendor\PasswordController::class, 'checkPasswordSession'])->name('check.vendor.password.session');
-
-
+Route::get('should_create_post_1/{case_id?}/{status?}', [Controllers\Vendor\CaseController::class, 'should_create_post_1'])->name('vendor.should_create_post_1');
+Route::get('should_create_post_2/{case_id?}/{status?}', [Controllers\Vendor\CaseController::class, 'should_create_post_2'])->name('vendor.should_create_post_2');
 
 });

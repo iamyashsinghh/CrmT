@@ -39,7 +39,10 @@ class CaseController extends Controller
             'cases.created_by'
         ])
             ->with(['user:id,f_name'])
-            ->where('assign_member_id', $auth_user->id);
+            ->where(function ($query) use ($auth_user) {
+                $query->where('assign_member_id', $auth_user->id)
+                      ->orWhere('assign_member_post_sales', $auth_user->id);
+            });
 
         return dataTables()->of($cases)
             ->addColumn('created_by', function ($case) {
@@ -240,5 +243,181 @@ class CaseController extends Controller
         }
 
         return redirect()->back();
+    }
+
+
+    public function update_post_one(Request $request, $id)
+    {
+        $request->validate([
+            'post_claim_no' => 'required|string',
+            'post_ammount' => 'required|string',
+            'post_status' => 'nullable|string',
+            'post_patient_details_form' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+        ]);
+        $case = Cases::findOrFail($id);
+        $case->post_claim_no = $request->post_claim_no;
+        $case->post_ammount = $request->post_ammount;
+        $case->post_status = $request->post_status;
+
+        $get_the_tpa_commission_type = $case->tpa_type;
+        $tpa1 = $case->tpa_allot_after_claim_no_received;
+        $tpa2 = $case->tpa_allot_after_claim_no_received_two;
+        $post_no_commission_tpa = $case->post_no_commission_tpa ?? [];
+
+        if ($request->post_status == 'Investigation') {
+            if ($get_the_tpa_commission_type === 'direct') {
+                if (!in_array($tpa1, $post_no_commission_tpa)) {
+                    $post_no_commission_tpa[] = $tpa1;
+                }
+            } elseif ($get_the_tpa_commission_type === 'first') {
+                if (!in_array($tpa1, $post_no_commission_tpa)) {
+                    $post_no_commission_tpa[] = $tpa1;
+                }
+                if (!in_array($tpa2, $post_no_commission_tpa)) {
+                    $post_no_commission_tpa[] = $tpa2;
+                }
+            }
+        }
+        $case->post_no_commission_tpa = $post_no_commission_tpa;
+
+        if ($request->post_status == 'Paid') {
+            $approvedAmt = $request->post_ammount;
+
+            $mainVendorUser = User::where('id', $case->created_by)->first();
+            if ($mainVendorUser) {
+                $commissionMain = ($mainVendorUser->commission_main / 100) * $approvedAmt;
+                $case->commission_vendor = $commissionMain;
+                $mainVendorUser->wallet -= $commissionMain;
+                $mainVendorUser->save();
+            }
+
+            if ($get_the_tpa_commission_type === 'direct') {
+                $mainTpaUser = User::where('id', $case->tpa_allot_after_claim_no_received)->first();
+                if ($mainTpaUser  && !in_array($tpa1, $post_no_commission_tpa)) {
+                    $commissionMain = ($mainTpaUser->commission_main / 100) * $approvedAmt;
+                    $case->commission_main_tpa = $commissionMain;
+                    $mainTpaUser->wallet += $commissionMain;
+                    $mainTpaUser->save();
+                } else {
+                    $case->commission_main_tpa = 0;
+                }
+            } elseif ($get_the_tpa_commission_type === 'first') {
+                $firstTpaUser = User::where('id', $tpa1)->first();
+                $secondTpaUser = User::where('id', $tpa2)->first();
+
+                if ($firstTpaUser && !in_array($tpa1, $post_no_commission_tpa)) {
+                    $commissionFirst = ($firstTpaUser->commission_first / 100) * $approvedAmt;
+                    $case->commission_first_tpa = $commissionFirst;
+                    $firstTpaUser->wallet += $commissionFirst;
+                    $firstTpaUser->save();
+                } else {
+                    $case->commission_first_tpa = 0;
+                }
+
+                if ($secondTpaUser && !in_array($tpa2, $post_no_commission_tpa)) {
+                    $commissionSecond = ($secondTpaUser->commission_second / 100) * $approvedAmt;
+                    $case->commission_second_tpa = $commissionSecond;
+                    $secondTpaUser->wallet += $commissionSecond;
+                    $secondTpaUser->save();
+                } else {
+                    $case->commission_second_tpa = 0;
+                }
+            }
+        }
+        if ($request->hasFile('post_patient_details_form')) {
+            $case->post_patient_details_form = $request->file('post_patient_details_form')->store('attachments', 'public');
+        }
+        $case->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Case updated successfully!',
+        ]);
+    }
+    public function update_post_two(Request $request, $id)
+    {
+        $request->validate([
+            'post_two_claim_no' => 'required|string',
+            'post_two_ammount' => 'required|string',
+            'post_two_status' => 'nullable|string',
+            'post_two_patient_details_form' => 'nullable|file|mimes:jpg,jpeg,png,pdf,xls,webp,xlsx,docx,doc|max:2048',
+        ]);
+        $case = Cases::findOrFail($id);
+        $case->post_two_claim_no = $request->post_two_claim_no;
+        $case->post_two_ammount = $request->post_two_ammount;
+        $case->post_two_status = $request->post_two_status;
+
+        $get_the_tpa_commission_type = $case->tpa_type;
+        $tpa1 = $case->tpa_allot_after_claim_no_received;
+        $tpa2 = $case->tpa_allot_after_claim_no_received_two;
+        $post_two_no_commission_tpa = $case->post_two_no_commission_tpa ?? [];
+
+        if ($request->post_two_status == 'Investigation') {
+            if ($get_the_tpa_commission_type === 'direct') {
+                if (!in_array($tpa1, $post_two_no_commission_tpa)) {
+                    $post_two_no_commission_tpa[] = $tpa1;
+                }
+            } elseif ($get_the_tpa_commission_type === 'first') {
+                if (!in_array($tpa1, $post_two_no_commission_tpa)) {
+                    $post_two_no_commission_tpa[] = $tpa1;
+                }
+                if (!in_array($tpa2, $post_two_no_commission_tpa)) {
+                    $post_two_no_commission_tpa[] = $tpa2;
+                }
+            }
+        }
+        $case->post_two_no_commission_tpa = $post_two_no_commission_tpa;
+
+        if ($request->post_two_status == 'Paid') {
+            $approvedAmt = $request->post_two_ammount;
+
+            $mainVendorUser = User::where('id', $case->created_by)->first();
+            if ($mainVendorUser) {
+                $commissionMain = ($mainVendorUser->commission_main / 100) * $approvedAmt;
+                $case->commission_vendor = $commissionMain;
+                $mainVendorUser->wallet -= $commissionMain;
+                $mainVendorUser->save();
+            }
+
+            if ($get_the_tpa_commission_type === 'direct') {
+                $mainTpaUser = User::where('id', $case->tpa_allot_after_claim_no_received)->first();
+                if ($mainTpaUser  && !in_array($tpa1, $post_two_no_commission_tpa)) {
+                    $commissionMain = ($mainTpaUser->commission_main / 100) * $approvedAmt;
+                    $case->commission_main_tpa = $commissionMain;
+                    $mainTpaUser->wallet += $commissionMain;
+                    $mainTpaUser->save();
+                } else {
+                    $case->commission_main_tpa = 0;
+                }
+            } elseif ($get_the_tpa_commission_type === 'first') {
+                $firstTpaUser = User::where('id', $tpa1)->first();
+                $secondTpaUser = User::where('id', $tpa2)->first();
+
+                if ($firstTpaUser && !in_array($tpa1, $post_two_no_commission_tpa)) {
+                    $commissionFirst = ($firstTpaUser->commission_first / 100) * $approvedAmt;
+                    $case->commission_first_tpa = $commissionFirst;
+                    $firstTpaUser->wallet += $commissionFirst;
+                    $firstTpaUser->save();
+                } else {
+                    $case->commission_first_tpa = 0;
+                }
+
+                if ($secondTpaUser && !in_array($tpa2, $post_two_no_commission_tpa)) {
+                    $commissionSecond = ($secondTpaUser->commission_second / 100) * $approvedAmt;
+                    $case->commission_second_tpa = $commissionSecond;
+                    $secondTpaUser->wallet += $commissionSecond;
+                    $secondTpaUser->save();
+                } else {
+                    $case->commission_second_tpa = 0;
+                }
+            }
+        }
+        if ($request->hasFile('post_two_patient_details_form')) {
+            $case->post_two_patient_details_form = $request->file('post_two_patient_details_form')->store('attachments', 'public');
+        }
+        $case->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Case updated successfully!',
+        ]);
     }
 }

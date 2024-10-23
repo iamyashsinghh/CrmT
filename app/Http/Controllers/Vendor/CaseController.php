@@ -193,4 +193,65 @@ class CaseController extends Controller
             'message' => 'Case updated successfully!',
         ]);
     }
+
+    public function should_create_post_1($case_id = 0, $status = 0){
+        $case = Cases::findOrFail($case_id);
+        if($status == 1){
+            $case->is_post_1 = 1;
+        }else{
+            $case->is_post_1 = 2;
+        }
+        if($case->save()){
+            $doctor_users = User::where('role_id', 3)->get();
+
+            $next_member_assign = $doctor_users->where('is_next', true)->first();
+
+            if (!$next_member_assign) {
+                $next_member_assign = $doctor_users->first();
+            }
+
+            $case->doctor_assigned = "$next_member_assign->f_name $next_member_assign->f_name";
+            $case->assign_member_post = $next_member_assign->id;
+            $case->save();
+
+            User::where('role_id', 3)->update(['is_next' => false]);
+
+            $next_member_index = $doctor_users->search($next_member_assign);
+            $next_member_index = ($next_member_index + 1) % $doctor_users->count();
+            $next_user = $doctor_users->get($next_member_index);
+            $next_user->is_next = true;
+            $next_user->save();
+        }
+        return redirect()->back();
+    }
+    public function should_create_post_2($case_id = 0, $status = 0){
+        $case = Cases::findOrFail($case_id);
+        if($status == 1){
+            $case->is_post_2 = 1;
+        }else{
+            $case->is_post_2 = 2;
+        }
+        if($case->save()){
+            $doctor_users = User::where('role_id', 3)->get();
+
+            $next_member_assign = $doctor_users->where('is_next', true)->first();
+
+            if (!$next_member_assign) {
+                $next_member_assign = $doctor_users->first();
+            }
+
+            $case->doctor_assigned = "$next_member_assign->f_name $next_member_assign->f_name";
+            $case->assign_member_post = $next_member_assign->id;
+            $case->save();
+
+            User::where('role_id', 3)->update(['is_next' => false]);
+
+            $next_member_index = $doctor_users->search($next_member_assign);
+            $next_member_index = ($next_member_index + 1) % $doctor_users->count();
+            $next_user = $doctor_users->get($next_member_index);
+            $next_user->is_next = true;
+            $next_user->save();
+        }
+        return redirect()->back();
+    }
 }

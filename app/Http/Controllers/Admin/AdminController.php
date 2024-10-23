@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     public function dashboard(){
+        // new cases
+        // case with all status
         return view('admin.dashboard');
     }
 }

@@ -12,10 +12,16 @@
             <div class="card mb-3">
                 <div class="card-header text-light" style="background-color: var(--wb-renosand);">
                     <h3 class="card-title">Case Information</h3>
-                    <a href="{{ route('lab.case.update', $case->id) }}" class="btn btn-primary text-light float-right"
-                        onclick="return confirm('Are you sure you want to create this Lab case?');">
-                        Create Lab
-                    </a>
+                    @if ($case->check_box == 1)
+                        <div class="btn btn-success text-light float-right">
+                            Lab Created
+                        </div>
+                    @else
+                        <a href="{{ route('lab.case.update', $case->id) }}" class="btn btn-primary text-light float-right"
+                            onclick="return confirm('Are you sure you want to create this Lab case?');">
+                            Create Lab
+                        </a>
+                    @endif
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -53,7 +59,8 @@
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Date of Discharge: </span>
-                            <span class="mx-1"> {{ date('d-M-Y', strtotime($case->dod)) }} at {{ $case->dod_time }}</span>
+                            <span class="mx-1"> {{ date('d-M-Y', strtotime($case->dod)) }} at
+                                {{ $case->dod_time }}</span>
                         </div>
                         <div class="col-sm-6">
                             <span class="text-bold mx-1" style="color: var(--wb-wood)">Hospital: </span>
@@ -114,6 +121,74 @@
                     </div>
                 </div>
             </div>
+
+            @if ($case->is_post_1 == 1)
+                <div class="card mb-3">
+                    <div class="card-header text-light" style="background-color: var(--wb-renosand);">
+                        <h3 class="card-title">Post 1 Information</h3>
+                        @if ($case->check_box_post == 1)
+                            <div class="btn btn-success text-light float-right">
+                                Lab Created
+                            </div>
+                        @else
+                            <a href="{{ route('lab.case.update.post_one', $case->id) }}"
+                                class="btn btn-primary text-light float-right"
+                                onclick="return confirm('Are you sure you want to create this Lab case?');">
+                                Create Lab
+                            </a>
+                        @endif
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">OPD Attachemnt: </span>
+                                @if ($case->opd_attachment)
+                                    <a href="{{ asset('storage/' . $case->opd_attachment) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if ($case->is_post_2 == 1)
+                <div class="card mb-3">
+                    <div class="card-header text-light" style="background-color: var(--wb-renosand);">
+                        <h3 class="card-title">Post 2 Information</h3>
+                        @if ($case->check_box_post_two == 1)
+                            <div class="btn btn-success text-light float-right">
+                                Lab Created
+                            </div>
+                        @else
+                            <a href="{{ route('lab.case.update.post_two', $case->id) }}"
+                                class="btn btn-primary text-light float-right"
+                                onclick="return confirm('Are you sure you want to create this Lab case?');">
+                                Create Lab
+                            </a>
+                        @endif
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span class="text-bold mx-1" style="color: var(--wb-wood)">OPD Attachemnt: </span>
+                                @if ($case->opd_attachment_2)
+                                    <a href="{{ asset('storage/' . $case->opd_attachment_2) }}" target="_blank"
+                                        class="text-primary">
+                                        <i class="bi bi-file-earmark-text"></i> View
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not Available</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </section>
     </div>
 
